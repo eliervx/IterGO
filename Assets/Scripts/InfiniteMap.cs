@@ -9,25 +9,39 @@ using System.Collections.Generic;
 public class InfiniteMap : MonoBehaviour, IDragHandler {
     public GameObject tilePrefab; 
     public int zoom = 6;
+    private float displayTileSize = 512f;
     // Coordonnées GPS de départ (ex: Paris pour le test)
     public float currentLat = 48.8584f;
     public float currentLon = 2.2945f;
+    public Vector2Int startTileCoords;
 
     private Vector2Int lastCenterTile;
-    private Vector2Int startTileCoords;
     private RectTransform contentTransform;
     private Dictionary<Vector2Int, GameObject> spawnedTiles = new Dictionary<Vector2Int, GameObject>();
 
-    void Start() {
+    IEnumerator Start() {
         Debug.Log("Démarrage de la map...");
-
         contentTransform = GetComponent<RectTransform>();
-        
-        // Point de reference
-        startTileCoords = GetTileCoords(currentLat, currentLon);
+        if (!Input.location.isEnabledByUser) {
+            Debug.Log("GPS désactivé par l'utilisateur");
+        } else {
+            Input.location.Start();
+
+            int maxWait = 20;
+            while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0) {
+                yield return new WaitForSeconds(1);
+                maxWait--;
+            }
+
+            if (Input.location.status == LocationServiceStatus.Running) {
+                currentLat = Input.location.lastData.latitude;
+                currentLon = Input.location.lastData.longitude;
+            }
+        }
+
+        startTileCoords = GetTileCoords(currentLat, currentLon); // Point de reference
         lastCenterTile = startTileCoords;
-        // Remise à zéro de la position 
-        contentTransform.anchoredPosition = Vector2.zero;
+        contentTransform.anchoredPosition = Vector2.zero; // Remise à zéro de la position 
 
         // Debug.Log($"Tuile centrale calculée : X={lastCenterTile.x}, Y={lastCenterTile.y}");
 
@@ -36,10 +50,10 @@ public class InfiniteMap : MonoBehaviour, IDragHandler {
 
     // Gère le déplacement à la main
     public void OnDrag(PointerEventData eventData) {
-        contentTransform.anchoredPosition += eventData.delta;
+        contentTransform.anchoredPosition += eventData.delta * 2.0f;
 
-        int offsetX = Mathf.RoundToInt(-contentTransform.anchoredPosition.x / 256f);
-        int offsetY = Mathf.RoundToInt(contentTransform.anchoredPosition.y / 256f);
+        int offsetX = Mathf.RoundToInt(-contentTransform.anchoredPosition.x / displayTileSize);
+        int offsetY = Mathf.RoundToInt(contentTransform.anchoredPosition.y / displayTileSize);
         
         Vector2Int newCenter = new Vector2Int(startTileCoords.x + offsetX, startTileCoords.y + offsetY);
 
@@ -55,8 +69,8 @@ public class InfiniteMap : MonoBehaviour, IDragHandler {
         if (newZoom < 5) newZoom = 5;
 
         if (newZoom != zoom) {
-            float offsetX = -contentTransform.anchoredPosition.x / 256f;
-            float offsetY = contentTransform.anchoredPosition.y / 256f;
+            float offsetX = -contentTransform.anchoredPosition.x / displayTileSize;
+            float offsetY = contentTransform.anchoredPosition.y / displayTileSize;
             
             float exactTileX = startTileCoords.x + offsetX;
             float exactTileY = startTileCoords.y + offsetY;
@@ -117,8 +131,10 @@ public class InfiniteMap : MonoBehaviour, IDragHandler {
         GameObject go = Instantiate(tilePrefab, transform);
         RectTransform rt = go.GetComponent<RectTransform>();
         
-        float posX = (coords.x - startTileCoords.x) * 256;
-        float posY = (coords.y - startTileCoords.y) * 256;
+        rt.sizeDelta = new Vector2(displayTileSize, displayTileSize);
+
+        float posX = (coords.x - startTileCoords.x) * displayTileSize;
+        float posY = (coords.y - startTileCoords.y) * displayTileSize;
         
         rt.anchoredPosition = new Vector2(posX, -posY);
         
@@ -147,8 +163,8 @@ public class InfiniteMap : MonoBehaviour, IDragHandler {
 
     Vector2Int GetTileCoordsFromPosition() {
         // On calcule le décalage actuel par rapport à la tuile de départ
-        int offsetX = Mathf.RoundToInt(-contentTransform.anchoredPosition.x / 256f);
-        int offsetY = Mathf.RoundToInt(contentTransform.anchoredPosition.y / 256f);
+        int offsetX = Mathf.RoundToInt(-contentTransform.anchoredPosition.x / displayTileSize);
+        int offsetY = Mathf.RoundToInt(contentTransform.anchoredPosition.y / displayTileSize);
         
         return new Vector2Int(startTileCoords.x + offsetX, startTileCoords.y + offsetY);
     }
