@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.unity.2d.sprite": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
     "co.parabox.stl": {
       "version": "https://github.com/karl-/pb_Stl.git",
       "depth": 0,
