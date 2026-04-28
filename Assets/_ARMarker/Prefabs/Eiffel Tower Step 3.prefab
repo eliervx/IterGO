@@ -1,0 +1,222 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &934933328034981555
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3188913796513366277}
+  m_Layer: 0
+  m_Name: Eiffel Tower Step 3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3188913796513366277
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934933328034981555}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5513144511056309046}
+  - {fileID: 2867478765033331605}
+  - {fileID: 3316608004383283943}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2919621916109765555
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3188913796513366277}
+    m_Modifications:
+    - target: {fileID: 469044795379114324, guid: 9258d8d7bf810bf49aa7682bf2dbd8af, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.23998886
+      objectReference: {fileID: 0}
+    - target: {fileID: 469044795379114324, guid: 9258d8d7bf810bf49aa7682bf2dbd8af, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.96123457
+      objectReference: {fileID: 0}
+    - target: {fileID: 469044795379114324, guid: 9258d8d7bf810bf49aa7682bf2dbd8af, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.8286111
+      objectReference: {fileID: 0}
+    - target: {fileID: 469044795379114324, guid: 9258d8d7bf810bf49aa7682bf2dbd8af, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.012340745
+      objectReference: {fileID: 0}
+    - target: {fileID: 469044795379114324, guid: 9258d8d7bf810bf49aa7682bf2dbd8af, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.012340745
+      objectReference: {fileID: 0}
+    - target: {fileID: 469044795379114324, guid: 9258d8d7bf810bf49aa7682bf2dbd8af, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.7069991
+      objectReference: {fileID: 0}
+    - target: {fileID: 469044795379114324, guid: 9258d8d7bf810bf49aa7682bf2dbd8af, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.7069991
+      objectReference: {fileID: 0}
+    - target: {fileID: 469044795379114324, guid: 9258d8d7bf810bf49aa7682bf2dbd8af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 469044795379114324, guid: 9258d8d7bf810bf49aa7682bf2dbd8af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 469044795379114324, guid: 9258d8d7bf810bf49aa7682bf2dbd8af, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4374842095514689413, guid: 9258d8d7bf810bf49aa7682bf2dbd8af, type: 3}
+      propertyPath: m_Name
+      value: Eiffel_Upper_Half
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9258d8d7bf810bf49aa7682bf2dbd8af, type: 3}
+--- !u!4 &3316608004383283943 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 469044795379114324, guid: 9258d8d7bf810bf49aa7682bf2dbd8af, type: 3}
+  m_PrefabInstance: {fileID: 2919621916109765555}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &4079189205561850459
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3188913796513366277}
+    m_Modifications:
+    - target: {fileID: 1796842175156605613, guid: 75c9859a488747041b0a6b6b35ba26e2, type: 3}
+      propertyPath: m_Name
+      value: Eiffel_Bottom
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367317852515520877, guid: 75c9859a488747041b0a6b6b35ba26e2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.2172487
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367317852515520877, guid: 75c9859a488747041b0a6b6b35ba26e2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 54.530014
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367317852515520877, guid: 75c9859a488747041b0a6b6b35ba26e2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -6.7270794
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367317852515520877, guid: 75c9859a488747041b0a6b6b35ba26e2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367317852515520877, guid: 75c9859a488747041b0a6b6b35ba26e2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.01745245
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367317852515520877, guid: 75c9859a488747041b0a6b6b35ba26e2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367317852515520877, guid: 75c9859a488747041b0a6b6b35ba26e2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.99984777
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367317852515520877, guid: 75c9859a488747041b0a6b6b35ba26e2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367317852515520877, guid: 75c9859a488747041b0a6b6b35ba26e2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8367317852515520877, guid: 75c9859a488747041b0a6b6b35ba26e2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 9211294573906684009, guid: 75c9859a488747041b0a6b6b35ba26e2, type: 3}
+--- !u!4 &5513144511056309046 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8367317852515520877, guid: 75c9859a488747041b0a6b6b35ba26e2, type: 3}
+  m_PrefabInstance: {fileID: 4079189205561850459}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6751684249229083243
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3188913796513366277}
+    m_Modifications:
+    - target: {fileID: 4212302976427718690, guid: f629d37e34b72264c8329c3451d10c0b, type: 3}
+      propertyPath: m_Name
+      value: Eiffel_Middle
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825253943051278846, guid: f629d37e34b72264c8329c3451d10c0b, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7.1051955
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825253943051278846, guid: f629d37e34b72264c8329c3451d10c0b, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -52.550014
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825253943051278846, guid: f629d37e34b72264c8329c3451d10c0b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.5888717
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825253943051278846, guid: f629d37e34b72264c8329c3451d10c0b, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.01745245
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825253943051278846, guid: f629d37e34b72264c8329c3451d10c0b, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825253943051278846, guid: f629d37e34b72264c8329c3451d10c0b, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.99984777
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825253943051278846, guid: f629d37e34b72264c8329c3451d10c0b, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825253943051278846, guid: f629d37e34b72264c8329c3451d10c0b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 90
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825253943051278846, guid: f629d37e34b72264c8329c3451d10c0b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8825253943051278846, guid: f629d37e34b72264c8329c3451d10c0b, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: -7435351994888737054, guid: f629d37e34b72264c8329c3451d10c0b, type: 3}
+--- !u!4 &2867478765033331605 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8825253943051278846, guid: f629d37e34b72264c8329c3451d10c0b, type: 3}
+  m_PrefabInstance: {fileID: 6751684249229083243}
+  m_PrefabAsset: {fileID: 0}

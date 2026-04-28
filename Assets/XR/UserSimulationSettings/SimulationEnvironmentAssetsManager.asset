@@ -15,5 +15,6 @@ MonoBehaviour:
   m_EnvironmentPrefabPaths:
   - Assets/_ARMarker/Prefabs/MyEnvironment.prefab
   - Assets/_ARMarker/Prefabs/MyEnvironment2.prefab
+  - Assets/_ARMarker/Prefabs/StartSceneEnv.prefab
   - Packages/com.unity.xr.arfoundation/Assets/Prefabs/DefaultSimulationEnvironment.prefab
   m_FallbackAtEndOfList: 1
