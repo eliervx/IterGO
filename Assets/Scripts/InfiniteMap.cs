@@ -50,7 +50,7 @@ public class InfiniteMap : MonoBehaviour, IDragHandler {
 
     // Gère le déplacement à la main
     public void OnDrag(PointerEventData eventData) {
-        contentTransform.anchoredPosition += eventData.delta * 2.0f;
+        contentTransform.anchoredPosition += eventData.delta * 1.5f;
 
         int offsetX = Mathf.RoundToInt(-contentTransform.anchoredPosition.x / displayTileSize);
         int offsetY = Mathf.RoundToInt(contentTransform.anchoredPosition.y / displayTileSize);
