@@ -10,95 +10,83 @@ public class InfiniteMap : MonoBehaviour, IDragHandler {
     public GameObject tilePrefab; 
     public int zoom = 6;
     private float displayTileSize = 512f;
-    // Coordonnées GPS de départ (ex: Paris pour le test)
+    
     public float currentLat = 48.8584f;
     public float currentLon = 2.2945f;
-    public Vector2Int startTileCoords;
+    
+    [HideInInspector] public Vector2 startTileCoords; // Coordonnées flottantes de la tuile centrale
 
-    private Vector2Int lastCenterTile;
+    private Vector2 lastCenterTile;
     private RectTransform contentTransform;
-    private Dictionary<Vector2Int, GameObject> spawnedTiles = new Dictionary<Vector2Int, GameObject>();
+    private Dictionary<Vector2, GameObject> spawnedTiles = new Dictionary<Vector2, GameObject>();
 
     IEnumerator Start() {
-        Debug.Log("Démarrage de la map...");
         contentTransform = GetComponent<RectTransform>();
-        if (!Input.location.isEnabledByUser) {
-            Debug.Log("GPS désactivé par l'utilisateur");
-        } else {
+        
+        // Initialisation GPS
+        if (Input.location.isEnabledByUser) {
             Input.location.Start();
-
             int maxWait = 20;
             while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0) {
                 yield return new WaitForSeconds(1);
                 maxWait--;
             }
-
             if (Input.location.status == LocationServiceStatus.Running) {
                 currentLat = Input.location.lastData.latitude;
                 currentLon = Input.location.lastData.longitude;
             }
         }
 
-        startTileCoords = GetTileCoords(currentLat, currentLon); // Point de reference
-        lastCenterTile = startTileCoords;
-        contentTransform.anchoredPosition = Vector2.zero; // Remise à zéro de la position 
-
-        // Debug.Log($"Tuile centrale calculée : X={lastCenterTile.x}, Y={lastCenterTile.y}");
-
+        // Calcul du point de référence au lancement
+        startTileCoords = GPSToTile(currentLat, currentLon); 
+        lastCenterTile = new Vector2(Mathf.Floor(startTileCoords.x), Mathf.Floor(startTileCoords.y));
+        
+        contentTransform.anchoredPosition = Vector2.zero; 
         UpdateGrid();
     }
 
-    // Gère le déplacement à la main
     public void OnDrag(PointerEventData eventData) {
-        contentTransform.anchoredPosition += eventData.delta * 1.5f;
+        contentTransform.anchoredPosition += eventData.delta;
 
-        int offsetX = Mathf.RoundToInt(-contentTransform.anchoredPosition.x / displayTileSize);
-        int offsetY = Mathf.RoundToInt(contentTransform.anchoredPosition.y / displayTileSize);
-        
-        Vector2Int newCenter = new Vector2Int(startTileCoords.x + offsetX, startTileCoords.y + offsetY);
+        // On vérifie si on doit charger de nouvelles tuiles
+        Vector2 currentPosTile = GetTileCoordsFromPosition();
+        Vector2 discreteCenter = new Vector2(Mathf.Floor(currentPosTile.x), Mathf.Floor(currentPosTile.y));
 
-        if (newCenter != lastCenterTile) {
-            lastCenterTile = newCenter;
+        if (discreteCenter != lastCenterTile) {
+            lastCenterTile = discreteCenter;
             UpdateGrid();
         }
     }
 
     public void OnZoomChanged(float newValue) {
         int newZoom = Mathf.RoundToInt(newValue);
-        
         if (newZoom < 5) newZoom = 5;
 
         if (newZoom != zoom) {
-            float offsetX = -contentTransform.anchoredPosition.x / displayTileSize;
-            float offsetY = contentTransform.anchoredPosition.y / displayTileSize;
+            // 1. Sauvegarder la position GPS centrale actuelle avant de zoomer
+            Vector2 currentCenterGPS = TileToGPS(GetTileCoordsFromPosition());
             
-            float exactTileX = startTileCoords.x + offsetX;
-            float exactTileY = startTileCoords.y + offsetY;
-            
-            Vector2 gpsCoords = TileToGPSExact(exactTileX, exactTileY, zoom);
             zoom = newZoom;
-            
-            currentLat = gpsCoords.x;
-            currentLon = gpsCoords.y;
-            startTileCoords = GetTileCoords(currentLat, currentLon);
-            lastCenterTile = startTileCoords;
+            currentLat = currentCenterGPS.x;
+            currentLon = currentCenterGPS.y;
 
-            foreach (var tile in spawnedTiles.Values) {
-                Destroy(tile);
-            }
+            // 2. Reset
+            startTileCoords = GPSToTile(currentLat, currentLon);
+            lastCenterTile = new Vector2(Mathf.Floor(startTileCoords.x), Mathf.Floor(startTileCoords.y));
+
+            foreach (var tile in spawnedTiles.Values) Destroy(tile);
             spawnedTiles.Clear();
+            
             contentTransform.anchoredPosition = Vector2.zero;
-
-            // Debug.Log($"Zoom {zoom} | GPS précis: {currentLat:F6}, {currentLon:F6}");
             UpdateGrid();
         }
     }
 
     void UpdateGrid() {
-        // On vérifie une zone de 5x5 autour de la tuile centrale actuelle
-        for (int x = lastCenterTile.x - 2; x <= lastCenterTile.x + 2; x++) {
-            for (int y = lastCenterTile.y - 2; y <= lastCenterTile.y + 2; y++) {
-                Vector2Int target = new Vector2Int(x, y);
+        int range = 2; // Grille 5x5
+        for (int x = (int)lastCenterTile.x - range; x <= (int)lastCenterTile.x + range; x++) {
+            for (int y = (int)lastCenterTile.y - range; y <= (int)lastCenterTile.y + range; y++) {
+                Vector2 target = new Vector2(x, y);
                 if (!spawnedTiles.ContainsKey(target)) {
                     CreateTile(target);
                 }
@@ -107,45 +95,32 @@ public class InfiniteMap : MonoBehaviour, IDragHandler {
         CleanupTiles();
     }
 
-    void CleanupTiles()
-    {
-        // Liste temp pour stocker les clés à supprimer
-        List<Vector2Int> toDestroy = new List<Vector2Int>();
-
-        foreach (var tile in spawnedTiles)
-        {
-            if (Vector2Int.Distance(tile.Key, lastCenterTile) > 3)
-            {
-                toDestroy.Add(tile.Key);
-            }
-        }
-
-        foreach (Vector2Int key in toDestroy)
-        {
-            Destroy(spawnedTiles[key]); // Détruit l'objet dans la scène
-            spawnedTiles.Remove(key);
-        }
-    }
-
-    void CreateTile(Vector2Int coords) {
+    void CreateTile(Vector2 coords) {
         GameObject go = Instantiate(tilePrefab, transform);
         RectTransform rt = go.GetComponent<RectTransform>();
-        
         rt.sizeDelta = new Vector2(displayTileSize, displayTileSize);
 
+        // Positionnement relatif à startTileCoords
         float posX = (coords.x - startTileCoords.x) * displayTileSize;
         float posY = (coords.y - startTileCoords.y) * displayTileSize;
         
+        // Comme le pivot est à 0.5, (0,0) est le centre. Pas besoin d'offset manuel ici, 
+        //posX et posY sont déjà des écarts par rapport au centre.
         rt.anchoredPosition = new Vector2(posX, -posY);
         
         spawnedTiles.Add(coords, go);
+
+        // Maintenir le marqueur au dessus
+        Transform userMarker = transform.Find("UserLocationMarker");
+        if (userMarker != null) userMarker.SetAsLastSibling();
+
         StartCoroutine(DownloadTile(coords, go.GetComponent<RawImage>()));
     }
 
-    IEnumerator DownloadTile(Vector2Int c, RawImage img) {
-        string url = $"https://tile.openstreetmap.org/{zoom}/{c.x}/{c.y}.png";
+    IEnumerator DownloadTile(Vector2 c, RawImage img) {
+        // On utilise Floor pour l'URL car OSM veut des entiers
+        string url = $"https://tile.openstreetmap.org/{zoom}/{(int)c.x}/{(int)c.y}.png";
         UnityWebRequest request = UnityWebRequestTexture.GetTexture(url);
-        // Debug.Log(url);
         request.SetRequestHeader("User-Agent", "Unity-IterGO-POC");
         yield return request.SendWebRequest();
 
@@ -154,29 +129,38 @@ public class InfiniteMap : MonoBehaviour, IDragHandler {
         }
     }
 
-    // --- Fonctions utilitaires ---
-    Vector2Int GetTileCoords(float lat, float lon) {
-        int x = (int)((lon + 180.0f) / 360.0f * Mathf.Pow(2, zoom));
-        int y = (int)((1.0f - Mathf.Log(Mathf.Tan(lat * Mathf.PI / 180.0f) + 1.0f / Mathf.Cos(lat * Mathf.PI / 180.0f)) / Mathf.PI) / 2.0f * Mathf.Pow(2, zoom));
-        return new Vector2Int(x, y);
+    void CleanupTiles() {
+        List<Vector2> toDestroy = new List<Vector2>();
+        foreach (var tile in spawnedTiles) {
+            if (Vector2.Distance(tile.Key, lastCenterTile) > 4) toDestroy.Add(tile.Key);
+        }
+        foreach (Vector2 key in toDestroy) {
+            Destroy(spawnedTiles[key]);
+            spawnedTiles.Remove(key);
+        }
     }
 
-    Vector2Int GetTileCoordsFromPosition() {
-        // On calcule le décalage actuel par rapport à la tuile de départ
-        int offsetX = Mathf.RoundToInt(-contentTransform.anchoredPosition.x / displayTileSize);
-        int offsetY = Mathf.RoundToInt(contentTransform.anchoredPosition.y / displayTileSize);
-        
-        return new Vector2Int(startTileCoords.x + offsetX, startTileCoords.y + offsetY);
+    // --- Fonctions Mathématiques ---
+
+    Vector2 GPSToTile(float lat, float lon) {
+        float n = Mathf.Pow(2, zoom);
+        float x = (lon + 180.0f) / 360.0f * n;
+        float latRad = lat * Mathf.PI / 180.0f;
+        float y = (1.0f - Mathf.Log(Mathf.Tan(latRad) + 1.0f / Mathf.Cos(latRad)) / Mathf.PI) / 2.0f * n;
+        return new Vector2(x, y);
     }
 
-    Vector2 TileToGPSExact(float tileX, float tileY, int zoomLevel) {
-        float n = Mathf.Pow(2, zoomLevel);
-        
-        float lon = tileX / n * 360.0f - 180.0f;
-        
-        float lat_rad = Mathf.Atan((float)Math.Sinh(Mathf.PI * (1 - 2 * tileY / n)));
-        float lat = lat_rad * 180.0f / Mathf.PI;
-        
+    Vector2 TileToGPS(Vector2 tile) {
+        float n = Mathf.Pow(2, zoom);
+        float lon = tile.x / n * 360.0f - 180.0f;
+        float latRad = Mathf.Atan((float)Math.Sinh(Mathf.PI * (1 - 2 * tile.y / n)));
+        float lat = latRad * 180.0f / Mathf.PI;
         return new Vector2(lat, lon);
+    }
+
+    Vector2 GetTileCoordsFromPosition() {
+        float offsetX = -contentTransform.anchoredPosition.x / displayTileSize;
+        float offsetY = contentTransform.anchoredPosition.y / displayTileSize;
+        return new Vector2(startTileCoords.x + offsetX, startTileCoords.y + offsetY);
     }
 }
