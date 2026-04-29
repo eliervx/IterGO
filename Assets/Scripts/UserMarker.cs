@@ -14,28 +14,17 @@ public class UserMarker : MonoBehaviour
 
     void Update()
     {
-        // if (Input.location.status == LocationServiceStatus.Running)
-        // {
-        //     float uLat = Input.location.lastData.latitude;
-        //     float uLon = Input.location.lastData.longitude;
+       float uLat, uLon;
 
-        //     float worldX = (uLon + 180.0f) / 360.0f * Mathf.Pow(2, mapScript.zoom);
-        //     float latRad = uLat * Mathf.PI / 180.0f;
-        //     float worldY = (1.0f - Mathf.Log(Mathf.Tan(latRad) + 1.0f / Mathf.Cos(latRad)) / Mathf.PI) / 2.0f * Mathf.Pow(2, mapScript.zoom);
-
-        //     float localX = (worldX - mapScript.startTileCoords.x) * displayTileSize;
-        //     float localY = (worldY - mapScript.startTileCoords.y) * displayTileSize;
-
-        //     rectTransform.anchoredPosition = new Vector2(localX, -localY);
-        // }
-        // TEST 
-        float uLat = 48.8584f;
-        float uLon = 2.2945f;
-
-        // 2. Calcul du worldX/Y en FLOAT (très important pour ne pas saccader)
+        if (Input.location.status == LocationServiceStatus.Running) {
+            uLat = Input.location.lastData.latitude;
+            uLon = Input.location.lastData.longitude;
+        } else {
+            uLat = 48.8584f; 
+            uLon = 2.2945f;
+        }
         Vector2 startTileCoords = GetTileCoords(uLat, uLon);
 
-        // 3. Écart par rapport à la tuile de référence (startTileCoords)
         float deltaX = (startTileCoords.x - mapScript.startTileCoords.x) * displayTileSize;
         float deltaY = (startTileCoords.y - mapScript.startTileCoords.y) * displayTileSize;
 
