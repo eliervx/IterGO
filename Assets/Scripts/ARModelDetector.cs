@@ -19,6 +19,7 @@ public class ARModelDetector : MonoBehaviour
 
     void OnEnable() => imageManager.trackedImagesChanged += OnChanged;
     void OnDisable() => imageManager.trackedImagesChanged -= OnChanged;
+    void OnDestroy() => StopAllCoroutines();
 
     void returnModel() {
         /*
@@ -87,14 +88,13 @@ public class ARModelDetector : MonoBehaviour
     }
 
     void ShowUI(GameObject container) {
-        if (!sliderActive && sliderUI != null) {
+        if (!sliderActive && sliderUI != null && sliderValues > 1) {
             sliderUI.SetActive(true);
             sliderActive = true;
             sliderComponent.maxValue = sliderValues - 1;
+            sliderComponent.value = 0; 
+            UpdateModels(container, 0);
         }
-        
-        sliderComponent.value = 2; 
-        UpdateModels(container, 2);
     }
 
     public void OnSliderMove() {
