@@ -982,6 +982,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1133720797 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5301133837906766948, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
+  m_PrefabInstance: {fileID: 1059435542}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1437137303
 GameObject:
   m_ObjectHideFlags: 0
@@ -1228,11 +1239,12 @@ PrefabInstance:
         UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"buttonCredit","value":{"$content":4,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.UI.Button,
         UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"pannelCredit","value":{"$content":5,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.GameObject,
         UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"buttonAdd","value":{"$content":6,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.UI.Button,
+        UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"},{"name":"buttonCollec","value":{"$content":7,"$type":"UnityEngine.Object"},"typeHandle":{"Identification":"UnityEngine.UI.Button,
         UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null","$version":"A"},"$version":"A"}],"$version":"A"},"$version":"A"}}'
       objectReference: {fileID: 0}
     - target: {fileID: 1068785196842390966, guid: 9be9a50e776aed44da5a788a4c2647f0, type: 3}
       propertyPath: _data._objectReferences.Array.size
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1068785196842390966, guid: 9be9a50e776aed44da5a788a4c2647f0, type: 3}
       propertyPath: '_data._objectReferences.Array.data[0]'
@@ -1262,6 +1274,10 @@ PrefabInstance:
       propertyPath: '_data._objectReferences.Array.data[6]'
       value: 
       objectReference: {fileID: 1891538786}
+    - target: {fileID: 1068785196842390966, guid: 9be9a50e776aed44da5a788a4c2647f0, type: 3}
+      propertyPath: '_data._objectReferences.Array.data[7]'
+      value: 
+      objectReference: {fileID: 1133720797}
     - target: {fileID: 1458294430617782464, guid: 9be9a50e776aed44da5a788a4c2647f0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 19.954
