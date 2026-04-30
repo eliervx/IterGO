@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8988455229155218792}
   - component: {fileID: 8836052431216958256}
   - component: {fileID: 3623816305666774398}
-  - component: {fileID: 7756719695334510952}
   m_Layer: 5
   m_Name: MapContent
   m_TagString: Untagged
@@ -77,21 +76,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7756719695334510952
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1046890677197285705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 339835416696d5a4cbb8c2bdf1e7c1a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FirestoreReader
-  markerPrefab: {fileID: 3066861192443898671, guid: 01cde77a834925e498fdb605bedbbca7, type: 3}
-  mapContent: {fileID: 8988455229155218792}
-  mapScript: {fileID: 0}
 --- !u!1 &3393021093132434572
 GameObject:
   m_ObjectHideFlags: 0
