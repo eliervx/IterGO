@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 /// <summary>
 /// MapController : Contrôleur responsable de la logique de gestion de la carte
@@ -29,6 +30,9 @@ public class MapController : MonoBehaviour, IDragHandler
     private Vector2 lastCenterTile;
     private Dictionary<Vector2, GameObject> spawnedTiles = new Dictionary<Vector2, GameObject>();
     private Dictionary<string, GameObject> spawnedPOIMarkers = new Dictionary<string, GameObject>();
+
+    [SerializeField] private GameObject poiPanel;
+    private GameObject activePOIPanel;
 
     IEnumerator Start()
     {
@@ -85,7 +89,7 @@ public class MapController : MonoBehaviour, IDragHandler
             POIMarkerView poiView = marker.GetComponent<POIMarkerView>();
             if (poiView != null)
             {
-                poiView.SetData(poi, mapService, displayTileSize);
+                poiView.SetData(poi, mapService, this, displayTileSize);
             }
 
             // Placer le marqueur POI au-dessus des tuiles (et du marqueur utilisateur)
@@ -95,6 +99,21 @@ public class MapController : MonoBehaviour, IDragHandler
         }
     }
 
+    public void ShowPOIPanel(POIData poi)
+    {
+        Debug.Log($"Affichage du panneau pour le POI : {poi.name}");
+        
+        if (activePOIPanel != null)
+            Destroy(activePOIPanel);
+        
+        // Instancier le panel en tant qu'enfant de MapContent
+        activePOIPanel = Instantiate(poiPanel, contentTransform);
+        
+        activePOIPanel.transform.Find("POIName").GetComponent<TextMeshProUGUI>().text = poi.name;
+        activePOIPanel.transform.Find("POIDescription").GetComponent<TextMeshProUGUI>().text = poi.description;
+        activePOIPanel.transform.SetAsLastSibling();
+    }
+
     public void OnDrag(PointerEventData eventData)
     {
         contentTransform.anchoredPosition += eventData.delta;
@@ -102,6 +121,13 @@ public class MapController : MonoBehaviour, IDragHandler
         // On vérifie si on doit charger de nouvelles tuiles
         Vector2 currentPosTile = GetTileCoordsFromPosition();
         Vector2 discreteCenter = new Vector2(Mathf.Floor(currentPosTile.x), Mathf.Floor(currentPosTile.y));
+
+        // Détruire le POI panel actif lors du déplacement
+        if (activePOIPanel != null)
+        {
+            Destroy(activePOIPanel);
+            activePOIPanel = null;
+        }
 
         if (discreteCenter != lastCenterTile)
         {

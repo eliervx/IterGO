@@ -13,17 +13,18 @@ public class POIMarkerView : MonoBehaviour
     [SerializeField] private TextMeshProUGUI descriptionText;
     private MapService mapService;
     private float displayTileSize;
-    
+    private MapController mapController;
     private POIData poiData;
     private RectTransform rectTransform;
 
     /// <summary>
     /// Initialise la vue avec les données d'un POI
     /// </summary>
-    public void SetData(POIData data, MapService mapService, float displayTileSize)
+    public void SetData(POIData data, MapService mapService, MapController mapController, float displayTileSize)
     {
         this.poiData = data;
         this.mapService = mapService;
+        this.mapController = mapController;
         this.displayTileSize = displayTileSize;
         
         if (rectTransform == null)
@@ -37,6 +38,7 @@ public class POIMarkerView : MonoBehaviour
     /// </summary>
     private void UpdateDisplay()
     {
+        Debug.Log($"Mise à jour de l'affichage du POI : {poiData.name}");
         if (poiData == null) return;
 
         if (nameText != null)
@@ -79,6 +81,7 @@ public class POIMarkerView : MonoBehaviour
     public void OnMarkerClicked()
     {
         Debug.Log($"POI cliqué : {poiData.name}");
-        // Implémentez ici l'interaction avec le POI (afficher un détail, etc.)
+        mapController.ShowPOIPanel(poiData);
+        UpdateDisplay();
     }
 }
