@@ -25,7 +25,7 @@ MonoBehaviour:
       m_GuidHigh: 4537060237936064251
     m_Size: {x: 0.1, y: 0.08744856}
     m_SpecifySize: 1
-    m_Name: iterGO_Marker2
+    m_Name: IterGO_Marker2
     m_Texture: {fileID: 0}
   - m_SerializedGuid:
       m_GuidLow: 5538998802303289318
