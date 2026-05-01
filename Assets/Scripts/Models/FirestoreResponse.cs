@@ -24,6 +24,7 @@ public class Fields
     public DoubleValue lat;
     public DoubleValue lon;
     public StringValue description;
+    public BoolValue estPrive;
 }
 
 [Serializable]
@@ -36,4 +37,10 @@ public class StringValue
 public class DoubleValue
 {
     public double doubleValue;
+}
+
+[Serializable]
+public class BoolValue
+{
+    public bool boolValue;
 }

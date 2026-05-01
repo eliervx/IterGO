@@ -51,7 +51,8 @@ public class FirestoreService : MonoBehaviour
                         doc.fields.nom.stringValue,
                         lat,
                         lon,
-                        doc.fields.description.stringValue
+                        doc.fields.description.stringValue,
+                        doc.fields.estPrive.boolValue
                     );
                     pois.Add(poi);
                 }

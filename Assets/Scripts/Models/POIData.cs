@@ -12,14 +12,16 @@ public class POIData
     public float latitude;
     public float longitude;
     public string description;
+    public bool estPrive;
 
-    public POIData(string id, string name, float latitude, float longitude, string description)
+    public POIData(string id, string name, float latitude, float longitude, string description, bool estPrive)
     {
         this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
         this.description = description;
+        this.estPrive = estPrive;
     }
 }
 

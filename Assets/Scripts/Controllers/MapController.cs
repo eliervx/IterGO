@@ -111,6 +111,8 @@ public class MapController : MonoBehaviour, IDragHandler
         
         activePOIPanel.transform.Find("ContentContainer/POIName").GetComponent<TextMeshProUGUI>().text = "<b>Nom : </b>" + poi.name;
         activePOIPanel.transform.Find("ContentContainer/POIDescription").GetComponent<TextMeshProUGUI>().text = "<b>Description : </b>" + poi.description;
+        activePOIPanel.transform.Find("ContentContainer/POIVisibilite").GetComponent<Toggle>().isOn = poi.estPrive;
+        
         activePOIPanel.transform.SetAsLastSibling();
     }
 
