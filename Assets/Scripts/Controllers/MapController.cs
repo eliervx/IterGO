@@ -109,8 +109,8 @@ public class MapController : MonoBehaviour, IDragHandler
         // Instancier le panel en tant qu'enfant de MapContent
         activePOIPanel = Instantiate(poiPanel, contentTransform);
         
-        activePOIPanel.transform.Find("POIName").GetComponent<TextMeshProUGUI>().text = poi.name;
-        activePOIPanel.transform.Find("POIDescription").GetComponent<TextMeshProUGUI>().text = poi.description;
+        activePOIPanel.transform.Find("ContentContainer/POIName").GetComponent<TextMeshProUGUI>().text = "<b>Nom : </b>" + poi.name;
+        activePOIPanel.transform.Find("ContentContainer/POIDescription").GetComponent<TextMeshProUGUI>().text = "<b>Description : </b>" + poi.description;
         activePOIPanel.transform.SetAsLastSibling();
     }
 
