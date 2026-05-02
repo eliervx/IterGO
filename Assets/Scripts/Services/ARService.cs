@@ -6,7 +6,7 @@ namespace IterGO.Services
 {
     public class ARService : MonoBehaviour
     {
-        private ARTrackedImageManager _manager;
+        [SerializeField] private ARTrackedImageManager _manager;
 
         public delegate void MarkerUpdatedHandler(string markerName, Vector3 position, Quaternion rotation);
         public event MarkerUpdatedHandler OnMarkerUpdated;
