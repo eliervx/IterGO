@@ -12,6 +12,8 @@ public class POIData
     public float latitude;
     public float longitude;
     public string description;
+    public string photoBase64;
+    public string userId;
 
     public POIData(string id, string name, float latitude, float longitude, string description)
     {

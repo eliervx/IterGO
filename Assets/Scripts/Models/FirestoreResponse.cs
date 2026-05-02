@@ -21,9 +21,11 @@ public class FirestoreDocument
 public class Fields
 {
     public StringValue nom;
+    public StringValue description;
+    public StringValue userId;
+    public StringValue photo;
     public DoubleValue lat;
     public DoubleValue lon;
-    public StringValue description;
 }
 
 [Serializable]

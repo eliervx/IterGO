@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2242933006851921287}
   - component: {fileID: 629416190405848466}
   m_Layer: 5
-  m_Name: TitreCollec
+  m_Name: TitrePOI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 3499834834334282490}
   - component: {fileID: 6461473162273784324}
   m_Layer: 5
-  m_Name: DescriptionCollec
+  m_Name: DescriptionPOI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 3454821193449556438}
   - component: {fileID: 7203422232852667706}
   m_Layer: 5
-  m_Name: PhotoCollec
+  m_Name: PhotoPOI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -359,7 +359,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5103783271128940149}
   m_Layer: 5
-  m_Name: TextCollec
+  m_Name: TextPOI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -397,8 +397,9 @@ GameObject:
   - component: {fileID: 7974046533336972673}
   - component: {fileID: 8211877948273642414}
   - component: {fileID: 8013436574130068041}
+  - component: {fileID: 2572136943497914256}
   m_Layer: 5
-  m_Name: ItemCollec
+  m_Name: POICard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -423,7 +424,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 100}
+  m_SizeDelta: {x: 300, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8211877948273642414
 CanvasRenderer:
@@ -463,3 +464,15 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2572136943497914256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6980043457543400118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16efe95a35322c349bd1777bb3ba180c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::POICardView

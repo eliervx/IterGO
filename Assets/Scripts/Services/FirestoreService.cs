@@ -65,4 +65,57 @@ public class FirestoreService : MonoBehaviour
             callback?.Invoke(new List<POIData>());
         }
     }
+
+    /// <summary>
+    /// Récupère les POIs d'un utilisateur spécifique depuis Firestore de manière asynchrone
+    /// </summary>
+    public void GetPOIsByUser(string userId, OnPOIsLoadedCallback callback)
+    {
+        StartCoroutine(GetPOIsByUserCoroutine(userId, callback));
+    }
+
+    private IEnumerator GetPOIsByUserCoroutine(string userId, OnPOIsLoadedCallback callback)
+    {
+        // Firestore REST API avec filtre sur userId
+        string filterUrl = $"{url}/POI?pageSize=100";
+        UnityWebRequest request = UnityWebRequest.Get(filterUrl);
+        yield return request.SendWebRequest();
+
+        if (request.result == UnityWebRequest.Result.Success)
+        {
+            string jsonResponse = request.downloadHandler.text;
+            FirestoreResponse data = JsonUtility.FromJson<FirestoreResponse>(jsonResponse);
+            List<POIData> pois = new List<POIData>();
+
+            if (data != null && data.documents != null)
+            {
+                foreach (var doc in data.documents)
+                {
+                    // Filtre côté client sur userId
+                    if (doc.fields.userId != null && 
+                        doc.fields.userId.stringValue == userId)
+                    {
+                        POIData poi = new POIData(
+                            doc.name,
+                            doc.fields.nom.stringValue,
+                            (float)doc.fields.lat.doubleValue,
+                            (float)doc.fields.lon.doubleValue,
+                            doc.fields.description.stringValue
+                        );
+                        // Récupère la photo si elle existe
+                        if (doc.fields.photo != null)
+                            poi.photoBase64 = doc.fields.photo.stringValue;
+
+                        pois.Add(poi);
+                    }
+                }
+            }
+            callback?.Invoke(pois);
+        }
+        else
+        {
+            Debug.LogError("Erreur Firestore : " + request.error);
+            callback?.Invoke(new List<POIData>());
+        }
+    }
 }
