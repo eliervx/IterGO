@@ -7,6 +7,7 @@ TagManager:
   - ARObject
   - Slider
   - Pannel
+  - Eiffel
   layers:
   - Default
   - TransparentFX

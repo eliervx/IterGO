@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
+using System.Collections;
 
 public class ARModelDetector : MonoBehaviour
 {
@@ -13,18 +14,37 @@ public class ARModelDetector : MonoBehaviour
     private bool sliderActive = false;
     private int sliderValues = 0;
 
+    private float latitude;
+    private float longitude;
+
     void OnEnable() => imageManager.trackedImagesChanged += OnChanged;
     void OnDisable() => imageManager.trackedImagesChanged -= OnChanged;
+    void OnDestroy() => StopAllCoroutines();
 
     void returnModel() {
-        // Là, il faudra faire un appel à la base pour récupérer le point le plus proche,
-        // Ça c'est les paramètres pour la Tour Eiffel
-        modelContainerTag = "ARObject";
+        /*
+        Là, il faut faire un appel à la base pour récupérer tous les POI publics et nous appartenant
+        requestResult =
+
+        foreach (var poi in requestResult) {
+            float poiLat = float.Parse(poi.Child("lat").Value.ToString());
+            float poiLon = float.Parse(poi.Child("lon").Value.ToString());
+            float distance = CalculateDistance(latitude, longitude, poiLat, poiLon);
+
+            if (distance < 500 && distance < closestDistance) {
+                closestDistance = distance;
+                modelContainerTag = poi.Child("prefabTag").Value.ToString();
+                sliderValues = int.Parse(poi.Child("sliderValues").Value.ToString());
+            }
+        }
+        */
+
+        modelContainerTag = "Eiffel";
         sliderValues = 3;
     }
 
     void Start() {
-        returnModel();
+        StartCoroutine(StartLocationService());
         GameObject slider = GameObject.FindWithTag(sliderTag);
         if (slider != null) {
             sliderUI = slider;
@@ -41,26 +61,44 @@ public class ARModelDetector : MonoBehaviour
         }
     }
 
+    IEnumerator StartLocationService() {
+        Input.location.Start(10f, 10f);
+        int maxWait = 20;
+            while (Input.location.status == LocationServiceStatus.Initializing && maxWait > 0) {
+            yield return new WaitForSeconds(1);
+            maxWait--;
+        }
+        if (maxWait < 1) {
+            Debug.Log("Délai d'attente GPS dépassé.");
+            yield break;
+        } else if (Input.location.status == LocationServiceStatus.Failed) {
+            Debug.Log("Impossible de déterminer la position GPS (Service Failed).");
+        } else if (Input.location.status == LocationServiceStatus.Running) {
+            latitude = Input.location.lastData.latitude;
+            longitude = Input.location.lastData.longitude;
+            Debug.Log($"GPS Initialisé : Lat {latitude} / Long {longitude}");
+        }
+        returnModel();
+    }
+
     void OnChanged(ARTrackedImagesChangedEventArgs eventArgs) {
-        foreach (var newImage in eventArgs.added)
-        {
+        foreach (var newImage in eventArgs.added) {
             ShowUI(newImage.gameObject);
         }
     }
 
     void ShowUI(GameObject container) {
-        if (!sliderActive && sliderUI != null) {
+        if (!sliderActive && sliderUI != null && sliderValues > 1) {
             sliderUI.SetActive(true);
             sliderActive = true;
             sliderComponent.maxValue = sliderValues - 1;
+            sliderComponent.value = 0; 
+            UpdateModels(container, 0);
         }
-        
-        sliderComponent.value = 2; 
-        UpdateModels(container, 2);
     }
 
     public void OnSliderMove() {
-        GameObject container = GameObject.FindWithTag("ARObject");
+        GameObject container = GameObject.FindWithTag(modelContainerTag);
         if (container != null) {
             UpdateModels(container, (int)sliderComponent.value);
         }
