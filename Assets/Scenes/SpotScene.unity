@@ -2033,6 +2033,7 @@ GameObject:
   - component: {fileID: 1239430249}
   - component: {fileID: 1239430248}
   - component: {fileID: 1239430247}
+  - component: {fileID: 1239430250}
   m_Layer: 5
   m_Name: CaptureButton
   m_TagString: Untagged
@@ -2154,6 +2155,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1239430245}
   m_CullTransparentMesh: 1
+--- !u!114 &1239430250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1239430245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cebd6a34a84b46499e0689647b0e801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IterGO.Controllers.PhotoController
+  panelTop: {fileID: 1796336990}
+  panelBottom: {fileID: 1670938954}
+  panelLeft: {fileID: 426983036}
+  panelRight: {fileID: 182516307}
+  captureButton: {fileID: 1239430245}
+  photoPreviewImage: {fileID: 718918663}
+  closeButton: {fileID: 0}
 --- !u!1 &1581175343
 GameObject:
   m_ObjectHideFlags: 0
@@ -3203,6 +3223,9 @@ GameObject:
   - component: {fileID: 2512387470422636640}
   - component: {fileID: 2512387470422636641}
   - component: {fileID: 2512387470422636642}
+  - component: {fileID: 2512387470422636672}
+  - component: {fileID: 2512387470422636671}
+  - component: {fileID: 2512387470422636670}
   m_Layer: 0
   m_Name: XR Origin (AR Rig)
   m_TagString: Untagged
@@ -3210,6 +3233,53 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2512387470422636670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2512387470422636669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93cc41e8eba734941928229d299d7901, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IterGO.Controllers.ARController
+  arService: {fileID: 2512387470422636671}
+  sliderTag: Slider
+  sliderUI: {fileID: 0}
+  sliderComponent: {fileID: 0}
+  modelContainerTag: 
+--- !u!114 &2512387470422636671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2512387470422636669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d70b7631eae2e1842ad950ff0faf8fdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IterGO.Services.ARService
+--- !u!114 &2512387470422636672
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2512387470422636669}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4dea56a9eaadd1c439095de4f9a371cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.XR.ARFoundation::UnityEngine.XR.ARFoundation.ARTrackedImageManager
+  <trackablesChanged>k__BackingField:
+    m_PersistentCalls:
+      m_Calls: []
+  m_SerializedLibrary: {fileID: 0}
+  m_MaxNumberOfMovingImages: 0
+  m_TrackedImagePrefab: {fileID: 0}
 --- !u!4 &2512387470860572925
 Transform:
   m_ObjectHideFlags: 0
