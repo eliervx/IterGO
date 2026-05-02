@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace IterGO.Services
 {
-    public class ScreenshotService
+    public class ScreenshotService : MonoBehaviour
     {
         public Texture2D capturedTexture;
 
