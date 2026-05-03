@@ -1,44 +1,34 @@
 using UnityEngine;
-using UnityEngine.Networking;
-using System.Collections;
 using System.Collections.Generic;
 
-/// <summary>
-/// CollectionController : Affiche tous les POIs créés par un utilisateur
-/// </summary>
 public class CollectionController : MonoBehaviour
 {
-    [Header("Configuration")]
-    [SerializeField] private string userId; // ID de l'utilisateur connecté
-
-    [Header("Références")]
-    [SerializeField] private Transform poiListContainer; // le Content du ScrollView
-    [SerializeField] private GameObject poiCardPrefab;   // prefab carte POI
+    [SerializeField] private Transform poiListContainer;
+    [SerializeField] private GameObject poiCardPrefab;
 
     private FirestoreService firestoreService;
 
     void Start()
     {
-        firestoreService = GetComponent<FirestoreService>() 
+        firestoreService = GetComponent<FirestoreService>()
             ?? gameObject.AddComponent<FirestoreService>();
 
-        LoadUserPOIs();
+        LoadUserEntries();
     }
 
-    public void LoadUserPOIs()
+    public void LoadUserEntries()
     {
-        // Vide la liste avant de recharger
         foreach (Transform child in poiListContainer)
             Destroy(child.gameObject);
 
-        firestoreService.GetPOIsByUser(userId, OnPOIsLoaded);
+        // UserSession.UserId retourne "1" pour l'instant
+        // Quand tu auras le login, ça retournera automatiquement le bon ID
+        firestoreService.GetUserEntries(UserSession.UserId, OnEntriesLoaded);
     }
 
-    private void OnPOIsLoaded(List<POIData> pois)
+    private void OnEntriesLoaded(List<POIData> entries)
     {
-        Debug.Log($"{pois.Count} POIs trouvés pour l'utilisateur {userId}");
-
-        foreach (var poi in pois)
+        foreach (var poi in entries)
         {
             GameObject card = Instantiate(poiCardPrefab, poiListContainer);
             POICardView cardView = card.GetComponent<POICardView>();

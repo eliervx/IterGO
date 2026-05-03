@@ -14,6 +14,8 @@ public class POIData
     public string description;
     public string photoBase64;
     public string userId;
+    public bool estPrive;
+    public bool isProposition;
 
     public POIData(string id, string name, float latitude, float longitude, string description)
     {

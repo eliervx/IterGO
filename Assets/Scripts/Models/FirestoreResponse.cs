@@ -26,6 +26,7 @@ public class Fields
     public StringValue photo;
     public DoubleValue lat;
     public DoubleValue lon;
+    public BoolValue estPrive;
 }
 
 [Serializable]
@@ -38,4 +39,10 @@ public class StringValue
 public class DoubleValue
 {
     public double doubleValue;
+}
+
+[Serializable]
+public class BoolValue
+{
+    public bool booleanValue;
 }

@@ -792,7 +792,7 @@ PrefabInstance:
     - target: {fileID: 1068785196842390966, guid: 9be9a50e776aed44da5a788a4c2647f0, type: 3}
       propertyPath: '_data._objectReferences.Array.data[7]'
       value: 
-      objectReference: {fileID: 4901937414852593153}
+      objectReference: {fileID: 4901937414852593154}
     - target: {fileID: 1458294430617782464, guid: 9be9a50e776aed44da5a788a4c2647f0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.95269
@@ -974,6 +974,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5833164898060636361, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
   m_PrefabInstance: {fileID: 4901937414852593152}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4901937414852593154 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5301133837906766948, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
+  m_PrefabInstance: {fileID: 4901937414852593152}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
