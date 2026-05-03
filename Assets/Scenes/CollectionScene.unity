@@ -1070,7 +1070,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bffb39892c3a604681c5c4fe7df43ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CollectionController
-  userId: 
   poiListContainer: {fileID: 1899487049}
   poiCardPrefab: {fileID: 6980043457543400118, guid: 96b4a6f2649f4a94fb68d6a5a1fa4457, type: 3}
 --- !u!4 &1459044334
@@ -1371,6 +1370,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1899487049}
     m_Modifications:
+    - target: {fileID: 1331914869435862672, guid: 96b4a6f2649f4a94fb68d6a5a1fa4457, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111095352291212386, guid: 96b4a6f2649f4a94fb68d6a5a1fa4457, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 6980043457543400118, guid: 96b4a6f2649f4a94fb68d6a5a1fa4457, type: 3}
       propertyPath: m_Name
       value: POICard
@@ -1405,7 +1412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7974046533336972673, guid: 96b4a6f2649f4a94fb68d6a5a1fa4457, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 7974046533336972673, guid: 96b4a6f2649f4a94fb68d6a5a1fa4457, type: 3}
       propertyPath: m_LocalPosition.x

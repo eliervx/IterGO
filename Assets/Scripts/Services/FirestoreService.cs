@@ -104,6 +104,8 @@ public class FirestoreService : MonoBehaviour
                     poi.estPrive       = doc.fields.estPrive?.booleanValue ?? false;
                     poi.isProposition  = collection == "PropositionPOI";
 
+                    
+                    Debug.Log($"Un {collection} : {poi.name}");
                     results.Add(poi);
                 }
             }
