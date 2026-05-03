@@ -124,7 +124,6 @@ public class MapController : MonoBehaviour, IDragHandler
 
     public void ShowPOIPanel(POIData poi)
     {
-        Debug.Log($"Affichage du panneau pour le POI : {poi.name}");
         
         if (activePOIPanel != null)
             Destroy(activePOIPanel);
@@ -132,7 +131,7 @@ public class MapController : MonoBehaviour, IDragHandler
         // Instancier le panel en tant qu'enfant de MapContent
         activePOIPanel = Instantiate(poiPanel, contentTransform);
         
-        activePOIPanel.transform.Find("ContentContainer/POIName").GetComponent<TextMeshProUGUI>().text = "<b>Nom : </b>" + poi.name;
+        activePOIPanel.transform.Find("ContentContainer/POIName").GetComponent<TextMeshProUGUI>().text = "<b>Nom : </b>" + poi.nom;
         activePOIPanel.transform.Find("ContentContainer/POIDescription").GetComponent<TextMeshProUGUI>().text = "<b>Description : </b>" + poi.description;
         activePOIPanel.transform.Find("ContentContainer/POIVisibilite").GetComponent<Toggle>().isOn = poi.estPrive;
         

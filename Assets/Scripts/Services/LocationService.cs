@@ -21,7 +21,7 @@ public class LocationService : MonoBehaviour
     /// <summary>
     /// Initialise le service de localisation
     /// </summary>
-    private void Initialize()
+    public void Initialize()
     {
         // Valeurs par défaut (Paris)
         float defaultLat = 48.8584f;
