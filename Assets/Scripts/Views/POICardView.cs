@@ -13,22 +13,40 @@ public class POICardView : MonoBehaviour
     {
         photoImage = transform.Find("PhotoPOI").GetComponent<RawImage>();
         titleText = transform.Find("TextPOI/TitrePOI").GetComponent<TMP_Text>();
-        descriptionText = transform.Find("TextPOI/DescriptionPOI").GetComponent<TMP_Text>();
+        descriptionText = transform.Find("TextPOI/DescriptionScroll/Viewport/Content/DescriptionPOI").GetComponent<TMP_Text>();
     }
 
     public void Setup(POIData poi)
     {
-        titleText.text = poi.name;
-        descriptionText.text = poi.description;
+        if (titleText != null)
+            titleText.text = poi.nom;
 
-        if (!string.IsNullOrEmpty(poi.photoBase64))
+        if (descriptionText != null)
+            descriptionText.text = poi.description;
+
+        if (photoImage != null)
         {
-            photoImage.gameObject.SetActive(true);
-            photoImage.texture = Base64ToTexture(poi.photoBase64);
-        }
-        else
-        {
-            photoImage.gameObject.SetActive(false);
+            // Vérifie que c'est bien du base64 valide
+            bool hasValidPhoto = !string.IsNullOrEmpty(poi.imageURLs) 
+                            && poi.imageURLs != "['']"
+                            && poi.imageURLs.Length > 100;
+
+            if (hasValidPhoto)
+            {
+                try
+                {
+                    photoImage.texture = Base64ToTexture(poi.imageURLs);
+                    photoImage.gameObject.SetActive(true);
+                }
+                catch
+                {
+                    photoImage.gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                photoImage.gameObject.SetActive(false);
+            }
         }
     }
 

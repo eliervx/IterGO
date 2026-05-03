@@ -40,7 +40,7 @@ public class POIMarkerView : MonoBehaviour
         if (poiData == null) return;
 
         if (nameText != null)
-            nameText.text = poiData.name;
+            nameText.text = poiData.nom;
 
         if (descriptionText != null)
             descriptionText.text = poiData.description;
@@ -78,7 +78,7 @@ public class POIMarkerView : MonoBehaviour
     /// </summary>
     public void OnMarkerClicked()
     {
-        Debug.Log($"POI cliqué : {poiData.name}");
+        Debug.Log($"POI cliqué : {poiData.nom}");
         // Implémentez ici l'interaction avec le POI (afficher un détail, etc.)
     }
 }

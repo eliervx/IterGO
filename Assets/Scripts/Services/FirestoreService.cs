@@ -39,8 +39,8 @@ public class FirestoreService : MonoBehaviour
                     POIData poi = new POIData(
                         doc.name,
                         doc.fields.nom?.stringValue ?? "Sans titre",
-                        (float)(doc.fields.lat?.doubleValue ?? 0),
-                        (float)(doc.fields.lon?.doubleValue ?? 0),
+                        (float)(doc.fields.Latitude?.doubleValue ?? 0),
+                        (float)(doc.fields.Longitude?.doubleValue ?? 0),
                         doc.fields.description?.stringValue ?? ""
                     );
                     pois.Add(poi);
@@ -94,18 +94,18 @@ public class FirestoreService : MonoBehaviour
                     POIData poi = new POIData(
                         doc.name,
                         doc.fields.nom?.stringValue ?? "Sans titre",
-                        (float)(doc.fields.lat?.doubleValue ?? 0),
-                        (float)(doc.fields.lon?.doubleValue ?? 0),
+                        (float)(doc.fields.Latitude?.doubleValue ?? 0),
+                        (float)(doc.fields.Longitude?.doubleValue ?? 0),
                         doc.fields.description?.stringValue ?? ""
                     );
 
-                    poi.photoBase64    = doc.fields.photo?.stringValue ?? "";
+                    poi.imageURLs    = doc.fields.imageURLs?.stringValue ?? "";
                     poi.userId         = doc.fields.userId?.stringValue ?? "";
                     poi.estPrive       = doc.fields.estPrive?.booleanValue ?? false;
                     poi.isProposition  = collection == "PropositionPOI";
 
                     
-                    Debug.Log($"Un {collection} : {poi.name}");
+                    Debug.Log($"Un {collection} : {poi.nom}");
                     results.Add(poi);
                 }
             }
@@ -125,12 +125,12 @@ public class FirestoreService : MonoBehaviour
         string description,
         double latitude,
         double longitude,
-        string photoBase64,
+        string imageURLs,
         string userId,
         bool isProposition,
         bool estPrive)
     {
-        StartCoroutine(PostEntry(nom, description, latitude, longitude, photoBase64, userId, isProposition, estPrive));
+        StartCoroutine(PostEntry(nom, description, latitude, longitude, imageURLs, userId, isProposition, estPrive));
     }
 
     private IEnumerator PostEntry(
@@ -138,7 +138,7 @@ public class FirestoreService : MonoBehaviour
         string description,
         double latitude,
         double longitude,
-        string photoBase64,
+        string imageURLs,
         string userId,
         bool isProposition,
         bool estPrive)
@@ -147,20 +147,23 @@ public class FirestoreService : MonoBehaviour
         string collection = isProposition ? "PropositionPOI" : "POI";
         string endpoint   = $"{url}/{collection}/{docId}";
 
-        string lat = latitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
-        string lon = longitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        string Latitude = latitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        string Longitude = longitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
         string json = $@"{{
             ""fields"": {{
                 ""id"":          {{ ""stringValue"": ""{docId}"" }},
                 ""nom"":         {{ ""stringValue"": ""{nom}"" }},
                 ""description"": {{ ""stringValue"": ""{description}"" }},
-                ""lat"":         {{ ""doubleValue"": {lat} }},
-                ""lon"":         {{ ""doubleValue"": {lon} }},
-                ""photo"":       {{ ""stringValue"": ""{photoBase64}"" }},
+                ""Latitude"":         {{ ""doubleValue"": {Latitude} }},
+                ""Longitude"":         {{ ""doubleValue"": {Longitude} }},
+                ""imageURLs"":       {{ ""stringValue"": ""{imageURLs}"" }},
                 ""userId"":      {{ ""stringValue"": ""{userId}"" }},
                 ""estPrive"":    {{ ""booleanValue"": {estPrive.ToString().ToLower()} }},
-                ""createdAt"":   {{ ""stringValue"": ""{DateTime.UtcNow:yyyy-MM-ddTHH:mm:ssZ}"" }}
+                ""majAt"":   {{ ""stringValue"": ""{DateTime.UtcNow:yyyy-MM-ddTHH:mm:ssZ}"" }},
+                ""prefabTag"":   {{ ""stringValue"": """"}},
+                ""sliderValues"":   {{ ""stringValue"": """"}},
+                ""tag"":   {{ ""stringValue"": """"}}
             }}
         }}";
 
