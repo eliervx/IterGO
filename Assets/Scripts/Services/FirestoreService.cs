@@ -42,7 +42,9 @@ public class FirestoreService : MonoBehaviour
                         (float)doc.fields.lat.doubleValue,
                         (float)doc.fields.lon.doubleValue,
                         doc.fields.description.stringValue,
-                        doc.fields.estPrive.boolValue
+                        doc.fields.estPrive.boolValue,
+                        doc.fields.prefabTag?.stringValue ?? "",
+                        int.TryParse(doc.fields.sliderValues?.integerValue, out int val) ? val : 1
                     );
                     pois.Add(poi);
                 }
@@ -98,7 +100,9 @@ public class FirestoreService : MonoBehaviour
                         (float)(doc.fields.lat?.doubleValue ?? 0),
                         (float)(doc.fields.lon?.doubleValue ?? 0),
                         doc.fields.description?.stringValue ?? "",
-                        doc.fields.estPrive?.boolValue ?? false
+                        doc.fields.estPrive?.boolValue ?? false,
+                        doc.fields.prefabTag?.stringValue ?? "",
+                        int.Parse(doc.fields.sliderValues?.integerValue ?? "1")
                     );
 
                     poi.imageURLs = doc.fields.imageURLs?.stringArray ?? new string[0];
@@ -118,6 +122,46 @@ public class FirestoreService : MonoBehaviour
         }
     }
 
+    public POIData GetClosestPOI(List<POIData> pois, float userLat, float userLon, float maxDistanceInMeters)
+    {
+        POIData closest = null;
+        float minDistance = float.MaxValue;
+
+        foreach (var poi in pois)
+        {
+            float dist = CalculateDistance(userLat, userLon, poi.latitude, poi.longitude);
+            if (dist < minDistance)
+            {
+                minDistance = dist;
+                closest = poi;
+            }
+        }
+        
+        if (maxDistanceInMeters != 0 && minDistance <= maxDistanceInMeters)
+        {
+            return closest;
+        }
+
+        Debug.Log($"POI le plus proche ({closest?.nom}) est trop loin : {minDistance}m");
+        return null;
+    }
+
+    private float CalculateDistance(float lat1, float lon1, float lat2, float lon2)
+    {
+        float R = 6371e3f;
+        float phi1 = lat1 * Mathf.Deg2Rad;
+        float phi2 = lat2 * Mathf.Deg2Rad;
+        float deltaPhi = (lat2 - lat1) * Mathf.Deg2Rad;
+        float deltaLambda = (lon2 - lon1) * Mathf.Deg2Rad;
+
+        float a = Mathf.Sin(deltaPhi / 2) * Mathf.Sin(deltaPhi / 2) +
+                    Mathf.Cos(phi1) * Mathf.Cos(phi2) *
+                    Mathf.Sin(deltaLambda / 2) * Mathf.Sin(deltaLambda / 2);
+        float c = 2 * Mathf.Atan2(Mathf.Sqrt(a), Mathf.Sqrt(1 - a));
+
+        return R * c;
+    }
+
     // ─────────────────────────────────────────────
     // ÉCRITURE
     // ─────────────────────────────────────────────
@@ -130,9 +174,11 @@ public class FirestoreService : MonoBehaviour
         string imageURLs,
         string userId,
         bool isProposition,
-        bool estPrive)
+        bool estPrive,
+        string prefabTag,
+        int sliderValues)
     {
-        StartCoroutine(PostEntry(nom, description, latitude, longitude, imageURLs, userId, isProposition, estPrive));
+        StartCoroutine(PostEntry(nom, description, latitude, longitude, imageURLs, userId, isProposition, estPrive, prefabTag, sliderValues));
     }
 
     private IEnumerator PostEntry(
@@ -143,7 +189,9 @@ public class FirestoreService : MonoBehaviour
         string imageURLs,
         string userId,
         bool isProposition,
-        bool estPrive)
+        bool estPrive,
+        string prefabTag,
+        int sliderValues)
     {
         string docId      = Guid.NewGuid().ToString();
         string collection = isProposition ? "PropositionPOI" : "POI";
@@ -163,9 +211,8 @@ public class FirestoreService : MonoBehaviour
                 ""userId"":      {{ ""stringValue"": ""{userId}"" }},
                 ""estPrive"":    {{ ""boolValue"": {estPrive.ToString().ToLower()} }},
                 ""majAt"":   {{ ""stringValue"": ""{DateTime.UtcNow:yyyy-MM-ddTHH:mm:ssZ}"" }},
-                ""prefabTag"":   {{ ""stringValue"": """"}},
-                ""sliderValues"":   {{ ""stringValue"": """"}},
-                ""tag"":   {{ ""stringValue"": """"}}
+                ""prefabTag"":   {{ ""stringValue"": ""{prefabTag}"" }},
+                ""sliderValues"": {{ ""integerValue"": {sliderValues} }}
             }}
         }}";
 

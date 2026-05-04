@@ -27,6 +27,8 @@ public class Fields
     public StringArray imageURLs;
     public DoubleValue lat;
     public DoubleValue lon;
+    public StringValue prefabTag;
+    public IntegerValue sliderValues;
 }
 
 [Serializable]
@@ -39,6 +41,12 @@ public class StringValue
 public class StringArray
 {
     public string[] stringArray;
+}
+
+[Serializable]
+public class IntegerValue
+{
+    public string integerValue;
 }
 
 [Serializable]

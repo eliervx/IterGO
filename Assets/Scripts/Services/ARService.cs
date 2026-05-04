@@ -32,11 +32,9 @@ namespace IterGO.Services
 
             foreach (var image in args.updated)
             {
-                Debug.Log("DANS LE FOR : " + args.updated.Count);
                 // On ne traite l'image que si elle est actuellement "Tracking" (bien vue par la caméra)
                 if (image.trackingState == UnityEngine.XR.ARSubsystems.TrackingState.Tracking)
                 {
-                    Debug.Log("DANS LE IF : " + args.updated.Count);
                     OnMarkerUpdated?.Invoke(image.referenceImage.name, image.transform.position, image.transform.rotation);
                 }
             }
