@@ -79,10 +79,6 @@ namespace IterGO.Controllers
 
                 sliderUI.SetActive(false);
             }
-            else
-            {
-                Debug.LogError($"Attention : Aucun objet avec le tag {sliderTag} n'a été trouvé !");
-            }
         }
 
         private IEnumerator InitializeLocation()
