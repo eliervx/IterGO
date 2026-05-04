@@ -8,6 +8,7 @@ TagManager:
   - Slider
   - Pannel
   - Eiffel
+  - Test
   layers:
   - Default
   - TransparentFX

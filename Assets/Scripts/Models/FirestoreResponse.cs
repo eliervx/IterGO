@@ -22,17 +22,31 @@ public class Fields
 {
     public StringValue nom;
     public StringValue description;
-    public StringValue userId;
-    public StringValue imageURLs;
-    public DoubleValue Latitude;
-    public DoubleValue Longitude;
     public BoolValue estPrive;
+    public StringValue userId;
+    public StringArray imageURLs;
+    public DoubleValue lat;
+    public DoubleValue lon;
+    public StringValue prefabTag;
+    public IntegerValue sliderValues;
 }
 
 [Serializable]
 public class StringValue
 {
     public string stringValue;
+}
+
+[Serializable]
+public class StringArray
+{
+    public string[] stringArray;
+}
+
+[Serializable]
+public class IntegerValue
+{
+    public string integerValue;
 }
 
 [Serializable]
@@ -44,5 +58,5 @@ public class DoubleValue
 [Serializable]
 public class BoolValue
 {
-    public bool booleanValue;
+    public bool boolValue;
 }

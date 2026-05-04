@@ -254,7 +254,9 @@ namespace IterGO.Controllers
                 photoBase64,
                 UserSession.UserId,
                 isProposition,
-                isPrivate
+                isPrivate,
+                "",
+                1
             );
         }
 
