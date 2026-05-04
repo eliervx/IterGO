@@ -12,7 +12,7 @@ public class POIData
     public float latitude;
     public float longitude;
     public string description;
-    public string imageURLs;
+    public string[] imageURLs;
     public string userId;
     public bool estPrive;
     public bool isProposition;

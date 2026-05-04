@@ -23,23 +23,25 @@ public class POICardView : MonoBehaviour
 
         if (descriptionText != null)
             descriptionText.text = poi.description;
-
+        
         if (photoImage != null)
         {
-            // Vérifie que c'est bien du base64 valide
-            bool hasValidPhoto = !string.IsNullOrEmpty(poi.imageURLs) 
-                            && poi.imageURLs != "['']"
-                            && poi.imageURLs.Length > 100;
+            bool hasValidPhoto = poi.imageURLs != null 
+                            && poi.imageURLs.Length > 0
+                            && !string.IsNullOrEmpty(poi.imageURLs[0])
+                            && poi.imageURLs[0] != "['']"
+                            && poi.imageURLs[0].Length > 100;
 
             if (hasValidPhoto)
             {
                 try
                 {
-                    photoImage.texture = Base64ToTexture(poi.imageURLs);
+                    photoImage.texture = Base64ToTexture(poi.imageURLs[0]);
                     photoImage.gameObject.SetActive(true);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Debug.LogWarning($"Erreur chargement photo : {e.Message}");
                     photoImage.gameObject.SetActive(false);
                 }
             }
@@ -47,6 +49,7 @@ public class POICardView : MonoBehaviour
             {
                 photoImage.gameObject.SetActive(false);
             }
+
         }
     }
 
