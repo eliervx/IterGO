@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
@@ -11,11 +12,16 @@ public class POIMarkerView : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI descriptionText;
+    [SerializeField] private GameObject poiPanelPrefab;
+    [SerializeField] private Texture poiPanelTextureEstPrive;
+    [SerializeField] private Texture poiPanelTextureEstPublic;
+
     private MapService mapService;
     private float displayTileSize;
     private MapController mapController;
     private POIData poiData;
     private RectTransform rectTransform;
+    private static GameObject activePOIPanel;
 
     /// <summary>
     /// Initialise la vue avec les données d'un POI
@@ -41,11 +47,22 @@ public class POIMarkerView : MonoBehaviour
         if (poiData == null) return;
 
         if (nameText != null)
-            nameText.text = poiData.nom;
+            nameText.text = "<b>Nom : </b>" + poiData.nom;
 
-        if (descriptionText != null)
-            descriptionText.text = poiData.description;
+        if (descriptionText != null) {
+            if (!string.IsNullOrEmpty(poiData.description)) 
+            {
+                descriptionText.text = "<b>Description : </b>" + poiData.description;
+            } 
+            else 
+            {
+                descriptionText.text = "<b>Description : </b><i> Aucune donnée </i>";
+            }
+        
+        }
     }
+
+    
 
     /// <summary>
     /// Met à jour la position du marqueur POI
@@ -74,13 +91,45 @@ public class POIMarkerView : MonoBehaviour
         return poiData;
     }
 
+    public static void CloseActivePanel()
+    {
+        if (activePOIPanel != null)
+        {
+            Object.Destroy(activePOIPanel);
+            activePOIPanel = null;
+        }
+    }
+
+    public void ShowPOIPanel()
+    {
+
+        CloseActivePanel();
+
+        activePOIPanel = Instantiate(poiPanelPrefab, transform);
+
+        activePOIPanel.transform.localPosition = new Vector3(-150, 100, 0);
+        activePOIPanel.transform.localScale = Vector3.one;
+
+        nameText = activePOIPanel.transform.Find("ContentContainer/POIName").GetComponent<TextMeshProUGUI>();
+        descriptionText = activePOIPanel.transform.Find("ContentContainer/POIDescription").GetComponent<TextMeshProUGUI>();
+        UpdateDisplay();
+
+        RawImage visibilityImage = activePOIPanel.transform.Find("POITopPanel/POIVisibilite")?.GetComponent<RawImage>();
+        if (visibilityImage != null)
+        {
+            visibilityImage.texture = poiData.estPrive ? poiPanelTextureEstPrive : poiPanelTextureEstPublic;
+        }
+
+        activePOIPanel.transform.SetAsLastSibling();
+    }
+
     /// <summary>
     /// Appelé quand l'utilisateur clique sur le marqueur
     /// </summary>
     public void OnMarkerClicked()
     {
         Debug.Log($"POI cliqué : {poiData.nom}");
-        mapController.ShowPOIPanel(poiData);
+        ShowPOIPanel();
         UpdateDisplay();
     }
 }
