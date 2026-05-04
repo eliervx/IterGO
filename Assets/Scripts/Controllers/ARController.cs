@@ -114,7 +114,7 @@ namespace IterGO.Controllers
                 if (pois != null && pois.Count > 0)
                 {
                     Debug.Log($"Nombre de POIs reçus de Firestore : {pois.Count}");
-                    POIData closest = firestoreService.GetClosestPOI(pois, latitude, longitude, 500f);
+                    POIData closest = firestoreService.GetClosestPOI(pois, latitude, longitude);
                     if (closest != null)
                     {
                         modelName = closest.prefabTag; 

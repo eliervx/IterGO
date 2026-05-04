@@ -122,7 +122,7 @@ public class FirestoreService : MonoBehaviour
         }
     }
 
-    public POIData GetClosestPOI(List<POIData> pois, float userLat, float userLon, float maxDistanceInMeters)
+    public POIData GetClosestPOI(List<POIData> pois, float userLat, float userLon)
     {
         POIData closest = null;
         float minDistance = float.MaxValue;
@@ -136,13 +136,6 @@ public class FirestoreService : MonoBehaviour
                 closest = poi;
             }
         }
-        
-        if (maxDistanceInMeters != 0 && minDistance <= maxDistanceInMeters)
-        {
-            return closest;
-        }
-
-        Debug.Log($"POI le plus proche ({closest?.nom}) est trop loin : {minDistance}m");
         return null;
     }
 
