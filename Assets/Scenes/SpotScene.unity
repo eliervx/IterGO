@@ -137,7 +137,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &35624733
 RectTransform:
   m_ObjectHideFlags: 0
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 465667803}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: IterGO.Controllers.PhotoController, Assembly-CSharp
         m_MethodName: OnSendClicked
         m_Mode: 1
@@ -628,7 +628,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 465667803}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LiveFeed, Assembly-CSharp
         m_MethodName: RemovePhoto
         m_Mode: 1
@@ -889,7 +889,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 465667804}
-  - component: {fileID: 465667803}
+  - component: {fileID: 465667805}
   m_Layer: 0
   m_Name: PhotoController
   m_TagString: Untagged
@@ -897,31 +897,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &465667803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 465667802}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cebd6a34a84b46499e0689647b0e801, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LiveFeed
-  panelTop: {fileID: 1796336990}
-  panelBottom: {fileID: 1670938954}
-  panelLeft: {fileID: 426983036}
-  panelRight: {fileID: 182516307}
-  captureButton: {fileID: 1239430245}
-  photoPreviewImage: {fileID: 718918663}
-  closeButton: {fileID: 220688278}
-  titleField: {fileID: 1449330449}
-  descriptionField: {fileID: 1120346660}
-  errorText: {fileID: 1059475294}
-  saveButton: {fileID: 2041203050}
-  sendButton: {fileID: 35624732}
-  firestoreService: {fileID: 542773420}
 --- !u!4 &465667804
 Transform:
   m_ObjectHideFlags: 0
@@ -937,6 +912,31 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &465667805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465667802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cebd6a34a84b46499e0689647b0e801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IterGO.Controllers.PhotoController
+  panelTop: {fileID: 1796336990}
+  panelBottom: {fileID: 1670938954}
+  panelLeft: {fileID: 426983036}
+  panelRight: {fileID: 182516307}
+  captureButton: {fileID: 1239430245}
+  photoPreviewImage: {fileID: 718918663}
+  closeButton: {fileID: 220688278}
+  titleField: {fileID: 1449330449}
+  descriptionField: {fileID: 1120346660}
+  errorText: {fileID: 1059475294}
+  saveButton: {fileID: 2041203050}
+  sendButton: {fileID: 35624732}
+  firestoreService: {fileID: 542773420}
 --- !u!1 &499385074
 GameObject:
   m_ObjectHideFlags: 0
@@ -1529,6 +1529,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 964101309656444032, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1049510725675476681, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1114168713586917681, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1163807817217155045, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
+      propertyPath: m_Layer
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 1850388964770907347, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
       propertyPath: m_Name
       value: Layer
@@ -1628,22 +1644,6 @@ PrefabInstance:
     - target: {fileID: 5833164898060636361, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7489154861859556706, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -1725
-      objectReference: {fileID: 0}
-    - target: {fileID: 7489154861859556706, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 8910793274399552280, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -1725
-      objectReference: {fileID: 0}
-    - target: {fileID: 8910793274399552280, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2328,7 +2328,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 465667803}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: LiveFeed, Assembly-CSharp
         m_MethodName: TakePhoto
         m_Mode: 1
@@ -3446,7 +3446,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2041203051
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3511,7 +3511,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 465667803}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: IterGO.Controllers.PhotoController, Assembly-CSharp
         m_MethodName: OnSaveClicked
         m_Mode: 1

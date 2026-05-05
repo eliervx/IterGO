@@ -91,8 +91,9 @@ public class FirestoreService : MonoBehaviour
             {
                 foreach (var doc in data.documents)
                 {
-                    if (doc.fields.userId == null ||
-                        doc.fields.userId.stringValue != userId) continue;
+                    string docUserId = doc.fields.userId?.referenceValue?.Trim() ?? "";
+                    
+                    if (docUserId != userId) continue;
 
                     POIData poi = new POIData(
                         doc.name,
@@ -105,13 +106,14 @@ public class FirestoreService : MonoBehaviour
                         int.Parse(doc.fields.sliderValues?.integerValue ?? "1")
                     );
 
-                    poi.imageURLs = doc.fields.imageURLs?.stringArray ?? new string[0];
-                    poi.userId         = doc.fields.userId?.stringValue ?? "";
+                    poi.imageURLs = doc.fields.imageURLs?.arrayValue?.values != null
+                        ? doc.fields.imageURLs.arrayValue.values.ConvertAll(v => v.stringValue).ToArray()
+                        : new string[0];
+                    poi.userId         = doc.fields.userId?.referenceValue ?? "";
                     poi.estPrive       = doc.fields.estPrive?.boolValue ?? false;
                     poi.isProposition  = collection == "PropositionPOI";
 
                     
-                    Debug.Log($"Un {collection} : {poi.nom}");
                     results.Add(poi);
                 }
             }
@@ -193,6 +195,10 @@ public class FirestoreService : MonoBehaviour
         string Latitude = latitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
         string Longitude = longitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
+        string userPath = userId.StartsWith("/Utilisateur/") 
+            ? userId 
+            : $"/Utilisateur/{userId}";
+
         string json = $@"{{
             ""fields"": {{
                 ""id"":          {{ ""stringValue"": ""{docId}"" }},
@@ -200,8 +206,8 @@ public class FirestoreService : MonoBehaviour
                 ""description"": {{ ""stringValue"": ""{description}"" }},
                 ""Latitude"":         {{ ""doubleValue"": {Latitude} }},
                 ""Longitude"":         {{ ""doubleValue"": {Longitude} }},
-                ""imageURLs"":       {{ ""stringValue"": ""{imageURLs}"" }},
-                ""userId"":      {{ ""stringValue"": ""{userId}"" }},
+                ""imageURLs"":   {{ ""arrayValue"": {{ ""values"": [ {{ ""stringValue"": ""{imageURLs}"" }} ] }} }},
+                ""userId"":      {{ ""referenceValue"": ""{userPath}"" }},
                 ""estPrive"":    {{ ""boolValue"": {estPrive.ToString().ToLower()} }},
                 ""majAt"":   {{ ""stringValue"": ""{DateTime.UtcNow:yyyy-MM-ddTHH:mm:ssZ}"" }},
                 ""prefabTag"":   {{ ""stringValue"": ""{prefabTag}"" }},
