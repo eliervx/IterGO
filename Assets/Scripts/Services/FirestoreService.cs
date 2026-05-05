@@ -136,7 +136,7 @@ public class FirestoreService : MonoBehaviour
                 closest = poi;
             }
         }
-        return null;
+        return closest;
     }
 
     private float CalculateDistance(float lat1, float lon1, float lat2, float lon2)
