@@ -7,7 +7,7 @@ using System.Text;
 
 public class FirestoreService : MonoBehaviour
 {
-    private static string projectId = "itergo-fd8aa";
+    private static string projectId = "itergo-dev";
     private static string url = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents";
 
     public delegate void OnPOIsLoadedCallback(List<POIData> pois);
