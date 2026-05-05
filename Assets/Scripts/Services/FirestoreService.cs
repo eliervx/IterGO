@@ -106,7 +106,9 @@ public class FirestoreService : MonoBehaviour
                         int.Parse(doc.fields.sliderValues?.integerValue ?? "1")
                     );
 
-                    poi.imageURLs = doc.fields.imageURLs?.stringArray ?? new string[0];
+                    poi.imageURLs = doc.fields.imageURLs?.arrayValue?.values != null
+                        ? doc.fields.imageURLs.arrayValue.values.ConvertAll(v => v.stringValue).ToArray()
+                        : new string[0];
                     poi.userId         = doc.fields.userId?.referenceValue ?? "";
                     poi.estPrive       = doc.fields.estPrive?.boolValue ?? false;
                     poi.isProposition  = collection == "PropositionPOI";

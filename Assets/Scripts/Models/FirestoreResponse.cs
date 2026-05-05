@@ -41,7 +41,13 @@ public class StringValue
 [Serializable]
 public class StringArray
 {
-    public string[] stringArray;
+    public ArrayValue arrayValue;
+}
+
+[Serializable]
+public class ArrayValue
+{
+    public List<StringValue> values;
 }
 
 [Serializable]
