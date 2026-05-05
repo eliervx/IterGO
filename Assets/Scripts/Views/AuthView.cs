@@ -42,7 +42,7 @@ public class AuthView : MonoBehaviour
         switchToLoginButton.onClick.AddListener(() => SwitchPanel(loginPanel));
 
         // Setup main UI
-        // logoutButton.onClick.AddListener(OnLogoutClick);
+        logoutButton.onClick.AddListener(OnLogoutClick);
 
     }
 
@@ -148,7 +148,7 @@ public class AuthView : MonoBehaviour
         if (isLoggedIn)
         {
             SwitchPanel(mainUI);
-            userEmailText.text = "Compte : " + authService.GetCurrentUserEmail();
+            userEmailText.text = "Email : " + authService.GetCurrentUserEmail();
         }
         else
         {
@@ -158,11 +158,14 @@ public class AuthView : MonoBehaviour
 
     public void CloseAuthSystem()
     {
-        this.gameObject.SetActive(false);
+        this.mainUI.SetActive(false);
+        this.loginPanel.SetActive(false);
+        this.registerPanel.SetActive(false);
     }
 
     private void OnLogoutClick()
     {
         authService.SignOut();
+        CloseAuthSystem();
     }
 }
