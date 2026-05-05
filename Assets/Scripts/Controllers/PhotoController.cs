@@ -43,7 +43,7 @@ namespace IterGO.Controllers
 
         void Start()
         {
-            screenshotService = new ScreenshotService();
+            screenshotService = gameObject.AddComponent<ScreenshotService>();
 
             // État initial
             saveButton.SetActive(false);
@@ -147,14 +147,21 @@ namespace IterGO.Controllers
         {
             if (!ValidateFields()) return;
             string photoBase64 = FirestoreService.TextureToBase64(currentPhoto, 256);
+            string titre = titleField.text;
+            string description = descriptionField.text;
+
+            // Reset UI immédiatement
+            RemovePhoto();
+            titleField.text = "";
+            descriptionField.text = "";
+
             StartCoroutine(GetLocationAndCreate(
-                titleField.text,
-                descriptionField.text,
+                titre,
+                description,
                 photoBase64,
                 isProposition: true,
                 isPrivate: false
             ));
-            RemovePhoto();
         }
 
         // ─────────────────────────────────────────────
