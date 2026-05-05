@@ -84,13 +84,48 @@ public class AuthService : MonoBehaviour
             PlayerPrefs.SetString("idToken", idToken);
             PlayerPrefs.Save();
 
-            AuthStateChanged?.Invoke(true, currentUserId, currentUserEmail);
-            callback(true, "");
+            // Créer le document utilisateur dans Firestore
+            yield return StartCoroutine(CreateUserDocumentCoroutine(currentUserId, email, callback));
         }
         else
         {
             FirebaseError error = JsonUtility.FromJson<FirebaseError>(request.downloadHandler.text);
             callback(false, error?.error?.message ?? "Unknown error");
+        }
+    }
+
+    private IEnumerator CreateUserDocumentCoroutine(string userId, string email, Action<bool, string> callback)
+    {
+        string projectId = FirebaseConfig.PROJECT_ID;
+        string firestoreUrl = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents/users/{userId}";
+
+        string userDocJson = $@"{{
+            ""fields"": {{
+                ""email"": {{""stringValue"": ""{email}""}},
+                ""userId"": {{""stringValue"": ""{userId}""}},
+                ""favorites"": {{""arrayValue"": {{}}}},
+                ""createdAt"": {{""timestamp"": ""{System.DateTime.UtcNow:o}""}}
+            }}
+        }}";
+
+        UnityWebRequest createRequest = new UnityWebRequest(firestoreUrl, "PATCH");
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(userDocJson);
+        createRequest.uploadHandler = new UploadHandlerRaw(bodyRaw);
+        createRequest.downloadHandler = new DownloadHandlerBuffer();
+        createRequest.SetRequestHeader("Content-Type", "application/json");
+
+        yield return createRequest.SendWebRequest();
+
+        if (createRequest.result == UnityWebRequest.Result.Success)
+        {
+            AuthStateChanged?.Invoke(true, currentUserId, currentUserEmail);
+            callback(true, "");
+            Debug.Log($"User document created in Firestore for {email}");
+        }
+        else
+        {
+            Debug.LogError($"Failed to create user document: {createRequest.downloadHandler.text}");
+            callback(false, "Failed to create user profile");
         }
     }
 
