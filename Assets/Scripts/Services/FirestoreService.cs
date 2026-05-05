@@ -7,7 +7,7 @@ using System.Text;
 
 public class FirestoreService : MonoBehaviour
 {
-    private static string projectId = "itergo-fd8aa";
+    private static string projectId = "itergo-dev";
     private static string url = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents";
 
     public delegate void OnPOIsLoadedCallback(List<POIData> pois);
@@ -113,7 +113,7 @@ public class FirestoreService : MonoBehaviour
                     poi.estPrive       = doc.fields.estPrive?.boolValue ?? false;
                     poi.isProposition  = collection == "PropositionPOI";
 
-                    
+                    Debug.Log($"Un {collection}: {poi.nom}");
                     results.Add(poi);
                 }
             }
@@ -195,9 +195,7 @@ public class FirestoreService : MonoBehaviour
         string Latitude = latitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
         string Longitude = longitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
-        string userPath = userId.StartsWith("/Utilisateur/") 
-            ? userId 
-            : $"/Utilisateur/{userId}";
+        string userPath = userId;
 
         string json = $@"{{
             ""fields"": {{
@@ -208,7 +206,7 @@ public class FirestoreService : MonoBehaviour
                 ""Longitude"":         {{ ""doubleValue"": {Longitude} }},
                 ""imageURLs"":   {{ ""arrayValue"": {{ ""values"": [ {{ ""stringValue"": ""{imageURLs}"" }} ] }} }},
                 ""userId"":      {{ ""referenceValue"": ""{userPath}"" }},
-                ""estPrive"":    {{ ""boolValue"": {estPrive.ToString().ToLower()} }},
+                ""estPrive"":    {{ ""booleanValue"": {estPrive.ToString().ToLower()} }},
                 ""majAt"":   {{ ""stringValue"": ""{DateTime.UtcNow:yyyy-MM-ddTHH:mm:ssZ}"" }},
                 ""prefabTag"":   {{ ""stringValue"": ""{prefabTag}"" }},
                 ""sliderValues"": {{ ""integerValue"": {sliderValues} }}
