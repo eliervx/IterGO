@@ -1,9 +1,8 @@
 using System;
 using UnityEngine;
-using System.Collections.Generic;
 
 /// <summary>
-/// Classes de sérialisation pour Firestore
+/// Classes simplifiées pour Firestore API REST
 /// </summary>
 [Serializable]
 public class FirestoreResponse
@@ -21,56 +20,32 @@ public class FirestoreDocument
 [Serializable]
 public class Fields
 {
-    public StringValue nom;
-    public StringValue description;
-    public BoolValue estPrive;
-    public ReferenceValue userId;
-    public StringArray imageURLs;
-    public DoubleValue lat;
-    public DoubleValue lon;
-    public StringValue prefabTag;
-    public IntegerValue sliderValues;
+    public FieldValue nom;
+    public FieldValue description;
+    public FieldValue estPrive;
+    public FieldValue userId;
+    public FieldValue imageURLs;
+    public FieldValue lat;
+    public FieldValue lon;
+    public FieldValue prefabTag;
+    public FieldValue sliderValues;
+    public FieldValue favorites;
+    public FieldValue userName;
+    public FieldValue text;
 }
 
 [Serializable]
-public class StringValue
+public class FieldValue
 {
     public string stringValue;
-}
-
-[Serializable]
-public class StringArray
-{
     public ArrayValue arrayValue;
+    public string integerValue;
+    public bool booleanValue;
+    public double doubleValue;
 }
 
 [Serializable]
 public class ArrayValue
 {
-    public List<StringValue> values;
-}
-
-[Serializable]
-public class IntegerValue
-{
-    public string integerValue;
-}
-
-
-[Serializable]
-public class ReferenceValue
-{
-    public string referenceValue;
-}
-
-[Serializable]
-public class DoubleValue
-{
-    public double doubleValue;
-}
-
-[Serializable]
-public class BoolValue
-{
-    public bool boolValue;
+    public FieldValue[] values;
 }

@@ -7,10 +7,17 @@ using System.Text;
 
 public class FirestoreService : MonoBehaviour
 {
-    private static string projectId = "itergo-dev";
+    private static string projectId = FirebaseConfig.PROJECT_ID;
     private static string url = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents";
 
     public delegate void OnPOIsLoadedCallback(List<POIData> pois);
+
+    private AuthService authService;
+
+    void Start()
+    {
+        authService = FindObjectOfType<AuthService>();
+    }
 
     // ─────────────────────────────────────────────
     // LECTURE — tous les POIs publics
@@ -34,19 +41,27 @@ public class FirestoreService : MonoBehaviour
 
             if (data != null && data.documents != null)
             {
+                string currentUserId = authService?.GetCurrentUserId();
+
                 foreach (var doc in data.documents)
                 {
-                    POIData poi = new POIData(
-                        doc.name,
-                        doc.fields.nom.stringValue,
-                        (float)doc.fields.lat.doubleValue,
-                        (float)doc.fields.lon.doubleValue,
-                        doc.fields.description.stringValue,
-                        doc.fields.estPrive.boolValue,
-                        doc.fields.prefabTag?.stringValue ?? "",
-                        int.TryParse(doc.fields.sliderValues?.integerValue, out int val) ? val : 1
-                    );
-                    pois.Add(poi);
+                    bool estPrive = doc.fields.estPrive?.booleanValue ?? false;
+                    string userId = doc.fields.userId?.stringValue ?? "";
+
+                    // Afficher POI public OU POI privé de l'utilisateur connecté
+                    if (!estPrive || (currentUserId != null && userId == currentUserId))
+                    {
+                        string nom = doc.fields.nom?.stringValue ?? "";
+                        float lat = (float)(doc.fields.lat?.doubleValue ?? 0);
+                        float lon = (float)(doc.fields.lon?.doubleValue ?? 0);
+                        string description = doc.fields.description?.stringValue ?? "";
+                        string prefabTag = doc.fields.prefabTag?.stringValue ?? "";
+                        int sliderValues = int.TryParse(doc.fields.sliderValues?.integerValue ?? "1", out int val) ? val : 1;
+
+                        POIData poi = new POIData(doc.name, nom, lat, lon, description, estPrive, prefabTag, sliderValues);
+                        poi.userId = userId;
+                        pois.Add(poi);
+                    }
                 }
             }
             callback?.Invoke(pois);
@@ -91,27 +106,27 @@ public class FirestoreService : MonoBehaviour
             {
                 foreach (var doc in data.documents)
                 {
-                    string docUserId = doc.fields.userId?.referenceValue?.Trim() ?? "";
-                    
+                    string docUserId = doc.fields.userId?.stringValue    ?? "";
+
                     if (docUserId != userId) continue;
 
-                    POIData poi = new POIData(
-                        doc.name,
-                        doc.fields.nom?.stringValue ?? "Sans titre",
-                        (float)(doc.fields.lat?.doubleValue ?? 0),
-                        (float)(doc.fields.lon?.doubleValue ?? 0),
-                        doc.fields.description?.stringValue ?? "",
-                        doc.fields.estPrive?.boolValue ?? false,
-                        doc.fields.prefabTag?.stringValue ?? "",
-                        int.Parse(doc.fields.sliderValues?.integerValue ?? "1")
-                    );
+                    string nom = doc.fields.nom?.stringValue ?? "Sans titre";
+                    float lat = (float)(doc.fields.lat?.doubleValue ?? 0);
+                    float lon = (float)(doc.fields.lon?.doubleValue ?? 0);
+                    string description = doc.fields.description?.stringValue ?? "";
+                    bool estPrive = doc.fields.estPrive?.booleanValue ?? false;
+                    string prefabTag = doc.fields.prefabTag?.stringValue ?? "";
+                    int sliderValues = int.TryParse(doc.fields.sliderValues?.integerValue ?? "1", out int val) ? val : 1;
+
+                    POIData poi = new POIData(doc.name, nom, lat, lon, description, estPrive, prefabTag, sliderValues);
 
                     poi.imageURLs = doc.fields.imageURLs?.arrayValue?.values != null
-                        ? doc.fields.imageURLs.arrayValue.values.ConvertAll(v => v.stringValue).ToArray()
+                        ? System.Array.ConvertAll(doc.fields.imageURLs.arrayValue.values,
+                            v => v?.stringValue ?? "")
                         : new string[0];
-                    poi.userId         = doc.fields.userId?.referenceValue ?? "";
-                    poi.estPrive       = doc.fields.estPrive?.boolValue ?? false;
-                    poi.isProposition  = collection == "PropositionPOI";
+                    poi.userId = docUserId;
+                    poi.estPrive = estPrive;
+                    poi.isProposition = collection == "PropositionPOI";
 
                     Debug.Log($"Un {collection}: {poi.nom}");
                     results.Add(poi);
