@@ -192,8 +192,8 @@ public class FirestoreService : MonoBehaviour
         string collection = isProposition ? "PropositionPOI" : "POI";
         string endpoint   = $"{url}/{collection}/{docId}";
 
-        string Latitude = latitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
-        string Longitude = longitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        string lat = latitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        string lon = longitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
         string userPath = userId;
 
@@ -202,8 +202,8 @@ public class FirestoreService : MonoBehaviour
                 ""id"":          {{ ""stringValue"": ""{docId}"" }},
                 ""nom"":         {{ ""stringValue"": ""{nom}"" }},
                 ""description"": {{ ""stringValue"": ""{description}"" }},
-                ""Latitude"":         {{ ""doubleValue"": {Latitude} }},
-                ""Longitude"":         {{ ""doubleValue"": {Longitude} }},
+                ""lat"":         {{ ""doubleValue"": {lat} }},
+                ""lon"":         {{ ""doubleValue"": {lon} }},
                 ""imageURLs"":   {{ ""arrayValue"": {{ ""values"": [ {{ ""stringValue"": ""{imageURLs}"" }} ] }} }},
                 ""userId"":      {{ ""referenceValue"": ""{userPath}"" }},
                 ""estPrive"":    {{ ""booleanValue"": {estPrive.ToString().ToLower()} }},
