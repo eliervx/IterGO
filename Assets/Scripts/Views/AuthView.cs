@@ -42,10 +42,8 @@ public class AuthView : MonoBehaviour
         switchToLoginButton.onClick.AddListener(() => SwitchPanel(loginPanel));
 
         // Setup main UI
-        logoutButton.onClick.AddListener(OnLogoutClick);
+        // logoutButton.onClick.AddListener(OnLogoutClick);
 
-        // Start with login panel if not logged in
-        UpdateUI();
     }
 
     private void OnAuthStateChanged(bool isLoggedIn, string userId, string email)
@@ -140,6 +138,27 @@ public class AuthView : MonoBehaviour
                 registerStatusText.text = "Erreur: " + message;
             }
         });
+    }
+
+    public void OnProfileButtonClick()
+    {
+        bool isLoggedIn = authService.IsUserLoggedIn();
+        this.gameObject.SetActive(true);
+
+        if (isLoggedIn)
+        {
+            SwitchPanel(mainUI);
+            userEmailText.text = "Compte : " + authService.GetCurrentUserEmail();
+        }
+        else
+        {
+            SwitchPanel(loginPanel);
+        }
+    }
+
+    public void CloseAuthSystem()
+    {
+        this.gameObject.SetActive(false);
     }
 
     private void OnLogoutClick()
