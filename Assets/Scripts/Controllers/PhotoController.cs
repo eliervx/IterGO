@@ -43,7 +43,7 @@ namespace IterGO.Controllers
 
         void Start()
         {
-            screenshotService = new ScreenshotService();
+            screenshotService = gameObject.AddComponent<ScreenshotService>();
 
             // État initial
             saveButton.SetActive(false);
