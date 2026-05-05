@@ -26,8 +26,8 @@ public class POICardView : MonoBehaviour
         
         if (photoImage != null)
         {
-            bool hasValidPhoto = poi.imageURLs != null 
-                            && poi.imageURLs.Length > 0
+            // Vérifie qu'il y a au moins une image valide dans le tableau
+            bool hasValidPhoto = poi.imageURLs != null && poi.imageURLs.Length > 0
                             && !string.IsNullOrEmpty(poi.imageURLs[0])
                             && poi.imageURLs[0] != "['']"
                             && poi.imageURLs[0].Length > 100;

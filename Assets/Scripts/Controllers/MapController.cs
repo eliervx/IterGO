@@ -5,6 +5,7 @@ using UnityEngine.Networking;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 /// <summary>
 /// MapController : Contrôleur responsable de la logique de gestion de la carte
@@ -21,6 +22,7 @@ public class MapController : MonoBehaviour, IDragHandler
     public float displayTileSize = 512f;
 
     [Header("Références")]
+    private RectTransform viewportRect;
     private RectTransform contentTransform;
     private FirestoreService firestoreService;
     private LocationService locationService;
@@ -29,17 +31,22 @@ public class MapController : MonoBehaviour, IDragHandler
     private Vector2 lastCenterTile;
     private Dictionary<Vector2, GameObject> spawnedTiles = new Dictionary<Vector2, GameObject>();
     private Dictionary<string, GameObject> spawnedPOIMarkers = new Dictionary<string, GameObject>();
+    private List<POIData> allPOIs = new List<POIData>();
+    private Queue<GameObject> poiPool = new Queue<GameObject>();
+    [SerializeField] private GameObject poiPanel;
+    private GameObject activePOIPanel;
 
     IEnumerator Start()
     {
         // Initialisation des références
         contentTransform = GetComponent<RectTransform>();
+        viewportRect = contentTransform.parent.GetComponent<RectTransform>();
         mapService = new MapService(initialZoom);
 
         // Récupérer ou créer les services
         firestoreService = GetComponent<FirestoreService>() ?? gameObject.AddComponent<FirestoreService>();
         locationService = FindObjectOfType<LocationService>() ?? new GameObject("LocationService").AddComponent<LocationService>();
-
+        
         // Attendre l'initialisation des services
         yield return new WaitUntil(() => locationService.IsInitialized());
 
@@ -58,6 +65,8 @@ public class MapController : MonoBehaviour, IDragHandler
 
         // Charger les POIs depuis Firestore
         firestoreService.GetPOIs(OnPOIsLoaded);
+        // On vérifie la visibilité toutes les 0.5 secondes (suffisant pour la fluidité)
+        InvokeRepeating(nameof(RefreshMarkers), 1f, 0.5f);
     }
 
     /// <summary>
@@ -65,10 +74,9 @@ public class MapController : MonoBehaviour, IDragHandler
     /// </summary>
     private void OnPOIsLoaded(List<POIData> pois)
     {
-        foreach (var poi in pois)
-        {
-            SpawnPOIMarker(poi);
-        }
+        allPOIs = pois;
+        Debug.Log($"{allPOIs.Count} points chargés en mémoire.");
+        RefreshMarkers();
     }
 
     /// <summary>
@@ -76,23 +84,58 @@ public class MapController : MonoBehaviour, IDragHandler
     /// </summary>
     private void SpawnPOIMarker(POIData poi)
     {
-        if (!spawnedPOIMarkers.ContainsKey(poi.id))
-        {
-            GameObject marker = Instantiate(poiMarkerPrefab, contentTransform);
-            Vector2 uiPos = mapService.GetUIPositionFromGPS(poi.latitude, poi.longitude, displayTileSize);
-            marker.GetComponent<RectTransform>().anchoredPosition = uiPos;
-
-            POIMarkerView poiView = marker.GetComponent<POIMarkerView>();
-            if (poiView != null)
-            {
-                poiView.SetData(poi, mapService, displayTileSize);
-            }
-
-            // Placer le marqueur POI au-dessus des tuiles (et du marqueur utilisateur)
-            marker.transform.SetAsLastSibling();
-
-            spawnedPOIMarkers[poi.id] = marker;
+        if (spawnedPOIMarkers.ContainsKey(poi.id)) return;
+        
+        GameObject marker;
+        
+        if (poiPool.Count > 0) {
+            marker = poiPool.Dequeue();
+            marker.SetActive(true);
         }
+        else 
+        {
+            marker = Instantiate(poiMarkerPrefab, contentTransform);
+        }
+
+        Vector2 uiPos = mapService.GetUIPositionFromGPS(poi.latitude, poi.longitude, displayTileSize);
+        marker.GetComponent<RectTransform>().anchoredPosition = uiPos;
+
+        POIMarkerView poiView = marker.GetComponent<POIMarkerView>();
+        if (poiView != null)
+        {
+            poiView.SetData(poi, mapService, this, displayTileSize);
+        }
+
+        // Placer le marqueur POI au-dessus des tuiles (et du marqueur utilisateur)
+        marker.transform.SetAsLastSibling();
+        spawnedPOIMarkers[poi.id] = marker;
+    
+    }
+
+    private void DespawnPOIMarker(string poiId) 
+    {
+        if (spawnedPOIMarkers.TryGetValue(poiId, out GameObject marker))
+        {
+            marker.SetActive(false);
+            poiPool.Enqueue(marker);
+            spawnedPOIMarkers.Remove(poiId);
+        }
+    }
+
+    public void ShowPOIPanel(POIData poi)
+    {
+        
+        if (activePOIPanel != null)
+            Destroy(activePOIPanel);
+        
+        // Instancier le panel en tant qu'enfant de MapContent
+        activePOIPanel = Instantiate(poiPanel, contentTransform);
+        
+        activePOIPanel.transform.Find("ContentContainer/POIName").GetComponent<TextMeshProUGUI>().text = "<b>Nom : </b>" + poi.nom;
+        activePOIPanel.transform.Find("ContentContainer/POIDescription").GetComponent<TextMeshProUGUI>().text = "<b>Description : </b>" + poi.description;
+        activePOIPanel.transform.Find("ContentContainer/POIVisibilite").GetComponent<Toggle>().isOn = poi.estPrive;
+        
+        activePOIPanel.transform.SetAsLastSibling();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -102,6 +145,13 @@ public class MapController : MonoBehaviour, IDragHandler
         // On vérifie si on doit charger de nouvelles tuiles
         Vector2 currentPosTile = GetTileCoordsFromPosition();
         Vector2 discreteCenter = new Vector2(Mathf.Floor(currentPosTile.x), Mathf.Floor(currentPosTile.y));
+
+        // Détruire le POI panel actif lors du déplacement
+        if (activePOIPanel != null)
+        {
+            Destroy(activePOIPanel);
+            activePOIPanel = null;
+        }
 
         if (discreteCenter != lastCenterTile)
         {
@@ -175,6 +225,23 @@ public class MapController : MonoBehaviour, IDragHandler
             }
         }
         CleanupTiles();
+        RefreshMarkers();        
+    }
+
+    void RefreshMarkers() {
+        if (allPOIs == null || allPOIs.Count == 0) return;
+        // if (mapService.GetZoom() <= 10 ) return; // TEMPORAIRE (#TODO: Marker Clustering )
+        foreach (var poi in allPOIs) {
+            bool isVisible = IsInViewport(poi.latitude, poi.longitude);
+
+            if (isVisible && !spawnedPOIMarkers.ContainsKey(poi.id)) {
+                SpawnPOIMarker(poi);
+            }
+            else if (!isVisible && spawnedPOIMarkers.ContainsKey(poi.id))
+            {
+                DespawnPOIMarker(poi.id);
+            }
+        }
     }
 
     private void CreateTile(Vector2 coords)
@@ -237,11 +304,41 @@ public class MapController : MonoBehaviour, IDragHandler
         }
     }
 
+    public void RecenterMap()
+    {
+        Debug.Log("Recenter map");
+        if (locationService != null)
+        {
+            UserData userLocation = locationService.GetCurrentLocation();
+            mapService.SetZoom(14);
+            mapService.Initialize(userLocation.latitude, userLocation.longitude);
+            lastCenterTile = new Vector2(Mathf.Floor(mapService.GetStartTileCoords().x), Mathf.Floor(mapService.GetStartTileCoords().y));
+            contentTransform.anchoredPosition = Vector2.zero;
+            UpdateGrid();
+        }
+    }
+
     private Vector2 GetTileCoordsFromPosition()
     {
         Vector2 startTileCoords = mapService.GetStartTileCoords();
         float offsetX = -contentTransform.anchoredPosition.x / displayTileSize;
         float offsetY = contentTransform.anchoredPosition.y / displayTileSize;
         return new Vector2(startTileCoords.x + offsetX, startTileCoords.y + offsetY);
+    }
+
+    private bool IsInViewport(float lat, float lon)
+    {
+        Vector2 poiLocalPos = mapService.GetUIPositionFromGPS(lat, lon, displayTileSize);
+        Vector2 posRelativeToViewport = poiLocalPos + contentTransform.anchoredPosition;
+
+        float w = viewportRect.rect.width / 2;
+        float h = viewportRect.rect.height / 2;
+
+        float margin = 100f;
+
+        return posRelativeToViewport.x > -w - margin && 
+            posRelativeToViewport.x <  w + margin &&
+            posRelativeToViewport.y > -h - margin && 
+            posRelativeToViewport.y <  h + margin;
     }
 }

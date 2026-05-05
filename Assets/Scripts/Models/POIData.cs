@@ -16,14 +16,19 @@ public class POIData
     public string userId;
     public bool estPrive;
     public bool isProposition;
+    public string prefabTag;
+    public int sliderValues;
 
-    public POIData(string id, string nom, float latitude, float longitude, string description)
+    public POIData(string id, string nom, float latitude, float longitude, string description, bool estPrive, string prefabTag, int sliderValues)
     {
         this.id = id;
         this.nom = nom;
         this.latitude = latitude;
         this.longitude = longitude;
         this.description = description;
+        this.estPrive = estPrive;
+        this.prefabTag = prefabTag;
+        this.sliderValues = sliderValues;
     }
 }
 
