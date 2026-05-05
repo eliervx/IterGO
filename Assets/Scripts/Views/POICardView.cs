@@ -23,7 +23,7 @@ public class POICardView : MonoBehaviour
 
         if (descriptionText != null)
             descriptionText.text = poi.description;
-
+        
         if (photoImage != null)
         {
             // Vérifie qu'il y a au moins une image valide dans le tableau
@@ -39,8 +39,9 @@ public class POICardView : MonoBehaviour
                     photoImage.texture = Base64ToTexture(poi.imageURLs[0]);
                     photoImage.gameObject.SetActive(true);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Debug.LogWarning($"Erreur chargement photo : {e.Message}");
                     photoImage.gameObject.SetActive(false);
                 }
             }
@@ -48,6 +49,7 @@ public class POICardView : MonoBehaviour
             {
                 photoImage.gameObject.SetActive(false);
             }
+
         }
     }
 

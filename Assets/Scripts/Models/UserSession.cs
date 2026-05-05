@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class UserSession
 {
-    // Point d'entrée unique pour l'ID utilisateur
-    // Pour ajouter le login plus tard : remplace "1" par l'ID récupéré depuis Firebase Auth
-    public static string UserId => PlayerPrefs.GetString("userId", "1");
+    // Pour l'instant chemin hardcodé, à remplacer par le vrai ID après login
+    public static string UserId => PlayerPrefs.GetString("userId", 
+    "projects/itergo-dev/databases/(default)/documents/Utilisateur/Ix7nu6dpm0qucauBtTO1");
+    public static string UserDocPath => UserId; // alias explicite
 
-    public static void SetUserId(string id)
+    public static void SetUserId(string firestorePath)
     {
-        PlayerPrefs.SetString("userId", id);
+        PlayerPrefs.SetString("userId", firestorePath);
         PlayerPrefs.Save();
     }
 
-    public static bool IsGuest => UserId == "1";
+    public static bool IsGuest => UserId == "/Utilisateur/test_user";
 }

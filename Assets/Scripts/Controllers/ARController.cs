@@ -19,7 +19,7 @@ namespace IterGO.Controllers
         public Slider sliderComponent;
 
         [Header("Model Management")]
-        public string modelName = "Eiffel";
+        private string modelName;
         private int sliderValues = 0;
         private bool sliderActive = false;
 
@@ -136,7 +136,7 @@ namespace IterGO.Controllers
 
         private void OnMarkerUpdated(string markerName, Vector3 position, Quaternion rotation)
         {
-            if (sliderActive) return;
+            if (modelName != null && modelName != "") return;
             Debug.Log($"Marqueur détecté: {markerName} à position {position}");
 
             LoadNearbyModels(() => {

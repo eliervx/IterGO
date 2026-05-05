@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 /// <summary>
 /// Classes de sérialisation pour Firestore
@@ -23,7 +24,7 @@ public class Fields
     public StringValue nom;
     public StringValue description;
     public BoolValue estPrive;
-    public StringValue userId;
+    public ReferenceValue userId;
     public StringArray imageURLs;
     public DoubleValue lat;
     public DoubleValue lon;
@@ -40,13 +41,26 @@ public class StringValue
 [Serializable]
 public class StringArray
 {
-    public string[] stringArray;
+    public ArrayValue arrayValue;
+}
+
+[Serializable]
+public class ArrayValue
+{
+    public List<StringValue> values;
 }
 
 [Serializable]
 public class IntegerValue
 {
     public string integerValue;
+}
+
+
+[Serializable]
+public class ReferenceValue
+{
+    public string referenceValue;
 }
 
 [Serializable]
