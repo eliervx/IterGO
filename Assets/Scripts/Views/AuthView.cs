@@ -158,9 +158,14 @@ public class AuthView : MonoBehaviour
 
     public void CloseAuthSystem()
     {
-        this.mainUI.SetActive(false);
-        this.loginPanel.SetActive(false);
-        this.registerPanel.SetActive(false);
+        Debug.Log("Fermeture du panel.");
+        // Désactiver tous les panneaux de l'AuthView
+        loginPanel.SetActive(false);
+        registerPanel.SetActive(false);
+        mainUI.SetActive(false);
+        
+        // Désactiver le GameObject contenant l'AuthView
+        this.gameObject.SetActive(false);
     }
 
     private void OnLogoutClick()

@@ -32,6 +32,8 @@ public class FirebaseErrorDetails
 
 public class AuthService : MonoBehaviour
 {
+    public static AuthService Instance { get; private set; }
+
     private const string API_KEY = FirebaseConfig.API_KEY;
     private const string AUTH_URL = "https://identitytoolkit.googleapis.com/v1/accounts:";
 
@@ -41,6 +43,18 @@ public class AuthService : MonoBehaviour
     private string currentUserId;
     private string currentUserEmail;
     private string idToken;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
     void Start()
     {

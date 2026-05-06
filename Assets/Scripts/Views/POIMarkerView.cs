@@ -120,9 +120,15 @@ public class POIMarkerView : MonoBehaviour
             return;
         }
 
-        activePOIPanel = Instantiate(poiPanelPrefab, transform.parent);
-        activePOIPanel.transform.Find("ContentContainer/POIName").GetComponent<TextMeshProUGUI>().text = "<b>Nom : </b>" + poiData.nom;
-        activePOIPanel.transform.Find("ContentContainer/POIDescription").GetComponent<TextMeshProUGUI>().text = "<b>Description : </b>" + poiData.description;
+        activePOIPanel = Instantiate(poiPanelPrefab, transform.parent, false);
+        RectTransform panelRect = activePOIPanel.GetComponent<RectTransform>();
+        if (panelRect != null && rectTransform != null)
+        {
+            panelRect.anchoredPosition = rectTransform.anchoredPosition + new Vector2(0, rectTransform.rect.height * 1.5f);
+        }
+
+        activePOIPanel.transform.Find("ContentContainer/Viewport/Content/POIName").GetComponent<TextMeshProUGUI>().text = "<b>Nom : </b>" + poiData.nom;
+        activePOIPanel.transform.Find("ContentContainer/Viewport/Content/POIDescription").GetComponent<TextMeshProUGUI>().text = "<b>Description : </b>" + poiData.description;
 
         RawImage visibilityImage = activePOIPanel.transform.Find("POITopPanel/POIVisibilite")?.GetComponent<RawImage>();
         if (visibilityImage != null)
