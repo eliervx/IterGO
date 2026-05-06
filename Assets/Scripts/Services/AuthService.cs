@@ -97,14 +97,14 @@ public class AuthService : MonoBehaviour
     private IEnumerator CreateUserDocumentCoroutine(string userId, string email, Action<bool, string> callback)
     {
         string projectId = FirebaseConfig.PROJECT_ID;
-        string firestoreUrl = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents/users/{userId}";
+        string firestoreUrl = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents/Utilisateur/{userId}";
 
         string userDocJson = $@"{{
             ""fields"": {{
                 ""email"": {{""stringValue"": ""{email}""}},
                 ""userId"": {{""stringValue"": ""{userId}""}},
                 ""favorites"": {{""arrayValue"": {{}}}},
-                ""createdAt"": {{""timestamp"": ""{System.DateTime.UtcNow:o}""}}
+                ""createdAt"": {{""timestampValue"": ""{System.DateTime.UtcNow:o}""}}
             }}
         }}";
 

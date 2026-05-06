@@ -95,47 +95,74 @@ public class FirestoreService : MonoBehaviour
 
     private IEnumerator FetchCollection(string collection, string userId, List<POIData> results)
     {
-        UnityWebRequest request = UnityWebRequest.Get($"{url}/{collection}?pageSize=100");
+        string queryUrl = $"{url}:runQuery";
+
+        string queryJson = $@"{{
+            ""structuredQuery"": {{
+                ""from"": [{{ ""collectionId"": ""{collection}"" }}],
+                ""where"": {{
+                    ""fieldFilter"": {{
+                        ""field"": {{ ""fieldPath"": ""userId"" }},
+                        ""op"": ""EQUAL"",
+                        ""value"": {{ ""referenceValue"": ""{userId}"" }}
+                    }}
+                }}
+            }}
+        }}";
+        Debug.Log(queryJson);
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(queryJson);
+
+        UnityWebRequest request = new UnityWebRequest(queryUrl, "POST");
+        request.uploadHandler   = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            FirestoreResponse data = JsonUtility.FromJson<FirestoreResponse>(request.downloadHandler.text);
+            // runQuery retourne un tableau JSON
+            string response = request.downloadHandler.text;
+            
+            // Parse manuel car JsonUtility ne gère pas les tableaux racine
+            RunQueryResponse[] queryResults = JsonHelper.FromJson<RunQueryResponse>(response);
 
-            if (data != null && data.documents != null)
+            if (queryResults != null && queryResults.Length > 0)
             {
-                foreach (var doc in data.documents)
+                foreach (var result in queryResults)
                 {
-                    string docUserId = doc.fields.userId?.stringValue    ?? "";
+                    if (result == null || result.document == null || result.document.fields == null) continue;
 
-                    if (docUserId != userId) continue;
+                    var doc = result.document;
+                    string docUserId = doc.fields.userId?.referenceValue?.Trim() ?? "";
 
-                    string nom = doc.fields.nom?.stringValue ?? "Sans titre";
-                    float lat = (float)(doc.fields.lat?.doubleValue ?? 0);
-                    float lon = (float)(doc.fields.lon?.doubleValue ?? 0);
-                    string description = doc.fields.description?.stringValue ?? "";
-                    bool estPrive = doc.fields.estPrive?.booleanValue ?? false;
-                    string prefabTag = doc.fields.prefabTag?.stringValue ?? "";
-                    int sliderValues = int.TryParse(doc.fields.sliderValues?.integerValue ?? "1", out int val) ? val : 1;
-
-                    POIData poi = new POIData(doc.name, nom, lat, lon, description, estPrive, prefabTag, sliderValues);
+                    POIData poi = new POIData(
+                        doc.name,
+                        doc.fields.nom?.stringValue ?? "Sans titre",
+                        (float)(doc.fields.lat?.doubleValue ?? 0),
+                        (float)(doc.fields.lon?.doubleValue ?? 0),
+                        doc.fields.description?.stringValue ?? "",
+                        doc.fields.estPrive?.booleanValue ?? false,
+                        doc.fields.prefabTag?.stringValue ?? "",
+                        int.TryParse(doc.fields.sliderValues?.integerValue, out int val) ? val : 1
+                    );
 
                     poi.imageURLs = doc.fields.imageURLs?.arrayValue?.values != null
                         ? System.Array.ConvertAll(doc.fields.imageURLs.arrayValue.values,
                             v => v?.stringValue ?? "")
                         : new string[0];
-                    poi.userId = docUserId;
-                    poi.estPrive = estPrive;
+                    poi.userId        = docUserId;
+                    poi.estPrive      = doc.fields.estPrive?.booleanValue ?? false;
                     poi.isProposition = collection == "PropositionPOI";
 
-                    Debug.Log($"Un {collection}: {poi.nom}");
+                    Debug.Log($"[{collection}] trouvé : {poi.nom}");
                     results.Add(poi);
                 }
             }
         }
         else
         {
-            Debug.LogError($"Erreur {collection} : {request.error}");
+            Debug.LogError($"Erreur {collection} : {request.error}\n{request.downloadHandler.text}");
         }
     }
 
@@ -207,8 +234,8 @@ public class FirestoreService : MonoBehaviour
         string collection = isProposition ? "PropositionPOI" : "POI";
         string endpoint   = $"{url}/{collection}/{docId}";
 
-        string Latitude = latitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
-        string Longitude = longitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        string lat = latitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        string lon = longitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
         string userPath = userId;
 
@@ -217,8 +244,8 @@ public class FirestoreService : MonoBehaviour
                 ""id"":          {{ ""stringValue"": ""{docId}"" }},
                 ""nom"":         {{ ""stringValue"": ""{nom}"" }},
                 ""description"": {{ ""stringValue"": ""{description}"" }},
-                ""Latitude"":         {{ ""doubleValue"": {Latitude} }},
-                ""Longitude"":         {{ ""doubleValue"": {Longitude} }},
+                ""lat"":         {{ ""doubleValue"": {lat} }},
+                ""lon"":         {{ ""doubleValue"": {lon} }},
                 ""imageURLs"":   {{ ""arrayValue"": {{ ""values"": [ {{ ""stringValue"": ""{imageURLs}"" }} ] }} }},
                 ""userId"":      {{ ""referenceValue"": ""{userPath}"" }},
                 ""estPrive"":    {{ ""booleanValue"": {estPrive.ToString().ToLower()} }},

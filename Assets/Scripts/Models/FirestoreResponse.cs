@@ -42,10 +42,50 @@ public class FieldValue
     public string integerValue;
     public bool booleanValue;
     public double doubleValue;
+    public ReferenceValue referenceValue;
+}
+
+[Serializable]
+public class ReferenceValue
+{
+    public string referenceValue;
+
+    public string Trim()
+    {
+        return referenceValue?.Trim();
+    }
 }
 
 [Serializable]
 public class ArrayValue
 {
     public FieldValue[] values;
+}
+
+[Serializable]
+public class DoubleValue
+{
+    public double doubleValue;
+}
+
+[Serializable]
+public class RunQueryResponse
+{
+    public FirestoreDocument document;
+}
+
+public static class JsonHelper
+{
+    public static T[] FromJson<T>(string json)
+    {
+        string wrapped = "{\"array\":" + json + "}";
+        Wrapper<T> wrapper = JsonUtility.FromJson<Wrapper<T>>(wrapped);
+        return wrapper.array;
+    }
+
+    [Serializable]
+    private class Wrapper<T>
+    {
+        public T[] array;
+    }
 }
