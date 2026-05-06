@@ -48,7 +48,11 @@ public class AuthView : MonoBehaviour
 
     private void OnAuthStateChanged(bool isLoggedIn, string userId, string email)
     {
-        UpdateUI();
+        // Don't do anything
+        if (0==1)
+        {
+            UpdateUI();
+        }
     }
 
     private void UpdateUI()
