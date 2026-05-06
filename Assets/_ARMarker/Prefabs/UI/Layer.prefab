@@ -1185,13 +1185,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
+      - m_Target: {fileID: 7728940776432065033}
+        m_TargetAssemblyTypeName: AuthView, Assembly-CSharp
+        m_MethodName: OnProfileButtonClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1616,35 +1616,43 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2751943168080614738, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2751943168080614738, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2751943168080614738, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 600
+      objectReference: {fileID: 0}
+    - target: {fileID: 4386038285001714380, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7728940776432065033}
+    - target: {fileID: 4386038285001714380, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseAuthSystem
       objectReference: {fileID: 0}
     - target: {fileID: 4520774211521531816, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4520774211521531816, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4520774211521531816, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 600
       objectReference: {fileID: 0}
     - target: {fileID: 4520774211521531816, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 4520774211521531816, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -450
       objectReference: {fileID: 0}
     - target: {fileID: 6537610087619698997, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_Pivot.x
@@ -1732,7 +1740,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6804655147857297485, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1911,6 +1919,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8051448769537182577, guid: df036e7b415066242bac88c9fd4349d6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7728940776432065033}
+    - target: {fileID: 8051448769537182577, guid: df036e7b415066242bac88c9fd4349d6, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseAuthSystem
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1956,6 +1972,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5833164898060636361}
     m_Modifications:
+    - target: {fileID: 1503214596350711772, guid: 8565209d775926d41906baab7f7c1bbd, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7728940776432065033}
+    - target: {fileID: 1503214596350711772, guid: 8565209d775926d41906baab7f7c1bbd, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CloseAuthSystem
+      objectReference: {fileID: 0}
     - target: {fileID: 2316644702968249426, guid: 8565209d775926d41906baab7f7c1bbd, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
