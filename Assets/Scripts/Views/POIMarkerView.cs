@@ -122,9 +122,25 @@ public class POIMarkerView : MonoBehaviour
 
         activePOIPanel = Instantiate(poiPanelPrefab, transform.parent, false);
         RectTransform panelRect = activePOIPanel.GetComponent<RectTransform>();
+
         if (panelRect != null && rectTransform != null)
         {
-            panelRect.anchoredPosition = rectTransform.anchoredPosition + new Vector2(0, rectTransform.rect.height * 1.5f);
+            Canvas rootCanvas = activePOIPanel.GetComponentInParent<Canvas>() ?? FindObjectOfType<Canvas>();
+            if (rootCanvas != null)
+            {
+                activePOIPanel.transform.SetParent(rootCanvas.transform, false);
+                Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(rootCanvas.worldCamera, rectTransform.position);
+                RectTransform canvasRect = rootCanvas.transform as RectTransform;
+                Vector2 localPoint;
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPoint, rootCanvas.worldCamera, out localPoint);
+
+                Vector2 preferredPosition = localPoint + new Vector2(0, rectTransform.rect.height * 1.5f);
+                panelRect.anchoredPosition = ClampToRect(preferredPosition, panelRect, canvasRect);
+            }
+            else
+            {
+                panelRect.anchoredPosition = rectTransform.anchoredPosition + new Vector2(0, rectTransform.rect.height * 1.5f);
+            }
         }
 
         activePOIPanel.transform.Find("ContentContainer/Viewport/Content/POIName").GetComponent<TextMeshProUGUI>().text = "<b>Nom : </b>" + poiData.nom;
@@ -154,6 +170,24 @@ public class POIMarkerView : MonoBehaviour
         }
 
         activePOIPanel.transform.SetAsLastSibling();
+    }
+
+    private Vector2 ClampToRect(Vector2 position, RectTransform childRect, RectTransform parentRect)
+    {
+        Vector2 minPosition = new Vector2(
+            parentRect.rect.xMin + childRect.rect.width * childRect.pivot.x,
+            parentRect.rect.yMin + childRect.rect.height * childRect.pivot.y
+        );
+
+        Vector2 maxPosition = new Vector2(
+            parentRect.rect.xMax - childRect.rect.width * (1 - childRect.pivot.x),
+            parentRect.rect.yMax - childRect.rect.height * (1 - childRect.pivot.y)
+        );
+
+        return new Vector2(
+            Mathf.Clamp(position.x, minPosition.x, maxPosition.x),
+            Mathf.Clamp(position.y, minPosition.y, maxPosition.y)
+        );
     }
 
     private void OnFavoriteClick()

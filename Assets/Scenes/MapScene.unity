@@ -566,6 +566,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 681856764}
   m_CullTransparentMesh: 1
+--- !u!114 &483635657 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7728940776432065033, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
+  m_PrefabInstance: {fileID: 1424607920}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f6b7ea5bfc8b3847928c90975056c44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AuthView
 --- !u!1001 &552276024
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1676,7 +1687,7 @@ PrefabInstance:
     - target: {fileID: 4653367501187290349, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 483635657}
     - target: {fileID: 4653367501187290349, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: OnProfileButtonClick
@@ -2293,7 +2304,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3393021093132434572, guid: 92466531732026446b60ee39ad03b396, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5462510475621126038, guid: 92466531732026446b60ee39ad03b396, type: 3}
       propertyPath: m_SizeDelta.x
