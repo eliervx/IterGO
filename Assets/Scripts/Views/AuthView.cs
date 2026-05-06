@@ -46,9 +46,6 @@ public class AuthView : MonoBehaviour
         // Setup main UI
         logoutButton.onClick.AddListener(OnLogoutClick);
 
-        exitRegisterButton.onClick.AddListener(OnCloseClick);
-        exitLoginButton.onClick.AddListener(OnCloseClick);
-
     }
 
     private void OnAuthStateChanged(bool isLoggedIn, string userId, string email)

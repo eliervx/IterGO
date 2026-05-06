@@ -242,7 +242,7 @@ public class FirestoreService : MonoBehaviour
         string lat = latitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
         string lon = longitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
-        string userPath = userId;
+        string userPath = $"projects/{projectId}/databases/(default)/documents/Utilisateur/{userId}";
 
         string json = $@"{{
             ""fields"": {{
@@ -269,6 +269,12 @@ public class FirestoreService : MonoBehaviour
         request.uploadHandler   = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
+
+        string authToken = authService?.GetIdToken();
+        if (!string.IsNullOrEmpty(authToken))
+        {
+            request.SetRequestHeader("Authorization", $"Bearer {authToken}");
+        }
 
         yield return request.SendWebRequest();
 
