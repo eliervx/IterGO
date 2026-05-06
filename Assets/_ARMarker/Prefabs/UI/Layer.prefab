@@ -252,6 +252,7 @@ GameObject:
   - component: {fileID: 3916305251996854099}
   - component: {fileID: 2425172360203163894}
   - component: {fileID: 7148769192127077118}
+  - component: {fileID: 6463339722270311024}
   m_Layer: 5
   m_Name: Ajout
   m_TagString: Untagged
@@ -360,6 +361,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &6463339722270311024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1114168713586917681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7d774c0338c37741b4b38808c59ed7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProtectedSceneButton
+  targetSceneName: SpotScene
+  loginPanelToShow: {fileID: 5932230750946210337}
 --- !u!1 &1163807817217155045
 GameObject:
   m_ObjectHideFlags: 0
@@ -1105,8 +1120,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2179960658949953453}
   - component: {fileID: 3021881283105814209}
-  - component: {fileID: 4653367501187290349}
   - component: {fileID: 1251527514454776862}
+  - component: {fileID: 4653367501187290349}
   m_Layer: 0
   m_Name: Compte
   m_TagString: Untagged
@@ -1141,6 +1156,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6220772389070482388}
   m_CullTransparentMesh: 1
+--- !u!114 &1251527514454776862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6220772389070482388}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Texture: {fileID: 2800000, guid: 03e2a011480ff614e8161cfdcd279601, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!114 &4653367501187290349
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1197,33 +1239,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1251527514454776862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6220772389070482388}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Texture: {fileID: 2800000, guid: 03e2a011480ff614e8161cfdcd279601, type: 3}
-  m_UVRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
 --- !u!1 &6572370166161788238
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,6 +1469,7 @@ GameObject:
   - component: {fileID: 2942036233970981790}
   - component: {fileID: 1387639696749679012}
   - component: {fileID: 5301133837906766948}
+  - component: {fileID: 7061571822726500751}
   m_Layer: 5
   m_Name: Collection
   m_TagString: Untagged
@@ -1562,6 +1578,20 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7061571822726500751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7797337240215541175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7d774c0338c37741b4b38808c59ed7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ProtectedSceneButton
+  targetSceneName: CollectionScene
+  loginPanelToShow: {fileID: 5932230750946210337}
 --- !u!1 &8454627641444117941
 GameObject:
   m_ObjectHideFlags: 0
