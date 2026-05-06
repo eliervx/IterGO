@@ -16,8 +16,10 @@ public class POIMarkerView : MonoBehaviour
     [SerializeField] private Texture poiPanelTextureEstPrive;
     [SerializeField] private Texture poiPanelTextureEstPublic;
     [SerializeField] private Button favoriteButton;
-    [SerializeField] private Button commentButton;
-    [SerializeField] private Button reportButton;
+    [SerializeField] private Texture favoriteButtonFullTexture;
+    [SerializeField] private Texture favoriteButtonEmptyTexture;
+    // [SerializeField] private Button commentButton;
+    // [SerializeField] private Button reportButton;
     private MapService mapService;
     private float displayTileSize;
     private MapController mapController;
@@ -35,7 +37,7 @@ public class POIMarkerView : MonoBehaviour
         this.displayTileSize = displayTileSize;
         this.authService = FindObjectOfType<AuthService>();
         this.userDataService = FindObjectOfType<UserDataService>();
-        
+
         if (rectTransform == null)
             rectTransform = GetComponent<RectTransform>();
 
@@ -131,20 +133,21 @@ public class POIMarkerView : MonoBehaviour
 
         // Configure buttons
         if (favoriteButton != null)
-        {
+        {   
+            Debug.Log("BOUTON TROUVE !!!!!!!!!");
             favoriteButton.onClick.AddListener(OnFavoriteClick);
             UpdateFavoriteButton();
         }
 
-        if (commentButton != null)
-        {
-            commentButton.onClick.AddListener(OnCommentClick);
-        }
+        // if (commentButton != null)
+        // {
+        //     commentButton.onClick.AddListener(OnCommentClick);
+        // }
 
-        if (reportButton != null)
-        {
-            reportButton.onClick.AddListener(OnReportClick);
-        }
+        // if (reportButton != null)
+        // {
+        //     reportButton.onClick.AddListener(OnReportClick);
+        // }
 
         activePOIPanel.transform.SetAsLastSibling();
     }
@@ -189,10 +192,10 @@ public class POIMarkerView : MonoBehaviour
     {
         if (favoriteButton == null) return;
 
-        TextMeshProUGUI buttonText = favoriteButton.GetComponentInChildren<TextMeshProUGUI>();
-        if (buttonText != null)
+        RawImage img = favoriteButton.GetComponentInChildren<RawImage>();
+        if (img != null)
         {
-            buttonText.text = poiData.isLikedByCurrentUser ? "❤️ Favoris" : "🤍 Ajouter aux favoris";
+            img.texture = poiData.isLikedByCurrentUser ? favoriteButtonFullTexture : favoriteButtonEmptyTexture;
         }
     }
 

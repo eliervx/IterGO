@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &3360553282184378551
+--- !u!1 &2032067748752984440
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,27 +8,27 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4540045031092546491}
-  - component: {fileID: 8697109628483932737}
-  - component: {fileID: 1011227031560845929}
-  - component: {fileID: 5266311533973424393}
-  - component: {fileID: 7604347007941675450}
+  - component: {fileID: 5455353364128495327}
+  - component: {fileID: 2845999776761929961}
+  - component: {fileID: 4440319520555863281}
+  - component: {fileID: 2376488854472260571}
+  - component: {fileID: 6583480421890795406}
   m_Layer: 5
   m_Name: POILocationMarker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &4540045031092546491
+  m_IsActive: 0
+--- !u!224 &5455353364128495327
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3360553282184378551}
+  m_GameObject: {fileID: 2032067748752984440}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -136.6202}
+  m_LocalPosition: {x: 0, y: 0, z: 17.274027}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -36,24 +36,24 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 214.00185, y: -840.91455}
+  m_AnchoredPosition: {x: 315.54565, y: 132.83998}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0}
---- !u!222 &8697109628483932737
+--- !u!222 &2845999776761929961
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3360553282184378551}
+  m_GameObject: {fileID: 2032067748752984440}
   m_CullTransparentMesh: 1
---- !u!114 &1011227031560845929
+--- !u!114 &4440319520555863281
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3360553282184378551}
+  m_GameObject: {fileID: 2032067748752984440}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
@@ -74,13 +74,13 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
---- !u!114 &5266311533973424393
+--- !u!114 &2376488854472260571
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3360553282184378551}
+  m_GameObject: {fileID: 2032067748752984440}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0782edbad143e5a4b96aa50c25b6482b, type: 3}
@@ -88,16 +88,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::POIController
   nameText: {fileID: 0}
   descriptionText: {fileID: 0}
-  poiPanelPrefab: {fileID: 4048372584413074303, guid: 50cdb0a57c946524e862b07dfd16ecea, type: 3}
+  poiPanelPrefab: {fileID: 9145116148392999306, guid: 29a48978a406e744ea6dbf1f89c83543, type: 3}
   poiPanelTextureEstPrive: {fileID: 2800000, guid: 19d6161863c210f4b8a8b887601b845d, type: 3}
   poiPanelTextureEstPublic: {fileID: 2800000, guid: 1d5d1a8dd4e31564a9200d1f584cbe8a, type: 3}
---- !u!114 &7604347007941675450
+  favoriteButton: {fileID: 0}
+  favoriteButtonFullTexture: {fileID: 2800000, guid: fc2d2b018b6588e479868ee8523b02b6, type: 3}
+  favoriteButtonEmptyTexture: {fileID: 2800000, guid: 15a878c658f3a1746b2fad6d46ac7438, type: 3}
+--- !u!114 &6583480421890795406
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3360553282184378551}
+  m_GameObject: {fileID: 2032067748752984440}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
@@ -131,11 +134,11 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 1011227031560845929}
+  m_TargetGraphic: {fileID: 4440319520555863281}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5266311533973424393}
+      - m_Target: {fileID: 2376488854472260571}
         m_TargetAssemblyTypeName: POIMarkerView, Assembly-CSharp
         m_MethodName: OnMarkerClicked
         m_Mode: 1
