@@ -11,6 +11,7 @@ public class AuthView : MonoBehaviour
     public Button loginButton;
     public Button switchToRegisterButton;
     public TextMeshProUGUI loginStatusText;
+    public Button exitLoginButton;
 
     [Header("Register Panel")]
     public GameObject registerPanel;
@@ -20,6 +21,7 @@ public class AuthView : MonoBehaviour
     public Button registerButton;
     public Button switchToLoginButton;
     public TextMeshProUGUI registerStatusText;
+    public Button exitRegisterButton;
 
     [Header("Main UI")]
     public GameObject mainUI;
@@ -43,6 +45,9 @@ public class AuthView : MonoBehaviour
 
         // Setup main UI
         logoutButton.onClick.AddListener(OnLogoutClick);
+
+        exitRegisterButton.onClick.AddListener(OnCloseClick);
+        exitLoginButton.onClick.AddListener(OnCloseClick);
 
     }
 
@@ -166,6 +171,10 @@ public class AuthView : MonoBehaviour
         
         // Désactiver le GameObject contenant l'AuthView
         this.gameObject.SetActive(false);
+    }
+
+    private void OnCloseClick() {
+        CloseAuthSystem();
     }
 
     private void OnLogoutClick()

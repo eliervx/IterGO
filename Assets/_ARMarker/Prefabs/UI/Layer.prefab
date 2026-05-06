@@ -1656,6 +1656,14 @@ PrefabInstance:
       propertyPath: m_SizeDelta.x
       value: 600
       objectReference: {fileID: 0}
+    - target: {fileID: 3521230418464622887, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
+      propertyPath: m_margin.w
+      value: -0.53141785
+      objectReference: {fileID: 0}
+    - target: {fileID: 4386038285001714380, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4386038285001714380, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -1663,6 +1671,14 @@ PrefabInstance:
     - target: {fileID: 4386038285001714380, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: CloseAuthSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 4386038285001714380, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: AuthView, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4386038285001714380, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4520774211521531816, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1683,6 +1699,30 @@ PrefabInstance:
     - target: {fileID: 4520774211521531816, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -450
+      objectReference: {fileID: 0}
+    - target: {fileID: 5484558476777401247, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5484558476777401247, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5484558476777401247, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5484558476777401247, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 5484558476777401247, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5484558476777401247, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -25
       objectReference: {fileID: 0}
     - target: {fileID: 6537610087619698997, guid: a548e6104a540eb448ab1b229bc8052a, type: 3}
       propertyPath: m_Pivot.x
@@ -1941,6 +1981,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5076148975668055865, guid: df036e7b415066242bac88c9fd4349d6, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -50
+      objectReference: {fileID: 0}
     - target: {fileID: 6085142060502446729, guid: df036e7b415066242bac88c9fd4349d6, type: 3}
       propertyPath: m_Name
       value: PanelProfile
@@ -2002,14 +2046,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5833164898060636361}
     m_Modifications:
+    - target: {fileID: 1390861876327879966, guid: 8565209d775926d41906baab7f7c1bbd, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1390861876327879966, guid: 8565209d775926d41906baab7f7c1bbd, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 1390861876327879966, guid: 8565209d775926d41906baab7f7c1bbd, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1390861876327879966, guid: 8565209d775926d41906baab7f7c1bbd, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -25
+      objectReference: {fileID: 0}
     - target: {fileID: 1503214596350711772, guid: 8565209d775926d41906baab7f7c1bbd, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7728940776432065033}
-    - target: {fileID: 1503214596350711772, guid: 8565209d775926d41906baab7f7c1bbd, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CloseAuthSystem
-      objectReference: {fileID: 0}
     - target: {fileID: 2316644702968249426, guid: 8565209d775926d41906baab7f7c1bbd, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -2117,6 +2173,10 @@ PrefabInstance:
     - target: {fileID: 5253664962041296540, guid: 8565209d775926d41906baab7f7c1bbd, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7082430799868309755, guid: 8565209d775926d41906baab7f7c1bbd, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8987656730852916563, guid: 8565209d775926d41906baab7f7c1bbd, type: 3}
       propertyPath: m_AnchorMax.y
