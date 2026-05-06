@@ -7,11 +7,17 @@ using System.Text;
 
 public class FirestoreService : MonoBehaviour
 {
-    private static string projectId = "itergo-fd8aa";
-    //private static string projectId = "itergo-dev";
+    private static string projectId = FirebaseConfig.PROJECT_ID;
     private static string url = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents";
 
     public delegate void OnPOIsLoadedCallback(List<POIData> pois);
+
+    private AuthService authService;
+
+    void Start()
+    {
+        authService = FindObjectOfType<AuthService>();
+    }
 
     // ─────────────────────────────────────────────
     // LECTURE — tous les POIs publics
@@ -35,19 +41,27 @@ public class FirestoreService : MonoBehaviour
 
             if (data != null && data.documents != null)
             {
+                string currentUserId = authService?.GetCurrentUserId();
+
                 foreach (var doc in data.documents)
                 {
-                    POIData poi = new POIData(
-                        doc.name,
-                        doc.fields.nom.stringValue,
-                        (float)doc.fields.lat.doubleValue,
-                        (float)doc.fields.lon.doubleValue,
-                        doc.fields.description.stringValue,
-                        doc.fields.estPrive.boolValue,
-                        doc.fields.prefabTag?.stringValue ?? "",
-                        int.TryParse(doc.fields.sliderValues?.integerValue, out int val) ? val : 1
-                    );
-                    pois.Add(poi);
+                    bool estPrive = doc.fields.estPrive?.booleanValue ?? false;
+                    string userId = doc.fields.userId?.stringValue ?? "";
+
+                    // Afficher POI public OU POI privé de l'utilisateur connecté
+                    if (!estPrive || (currentUserId != null && userId == currentUserId))
+                    {
+                        string nom = doc.fields.nom?.stringValue ?? "";
+                        float lat = (float)(doc.fields.lat?.doubleValue ?? 0);
+                        float lon = (float)(doc.fields.lon?.doubleValue ?? 0);
+                        string description = doc.fields.description?.stringValue ?? "";
+                        string prefabTag = doc.fields.prefabTag?.stringValue ?? "";
+                        int sliderValues = int.TryParse(doc.fields.sliderValues?.integerValue ?? "1", out int val) ? val : 1;
+
+                        POIData poi = new POIData(doc.name, nom, lat, lon, description, estPrive, prefabTag, sliderValues);
+                        poi.userId = userId;
+                        pois.Add(poi);
+                    }
                 }
             }
             callback?.Invoke(pois);
@@ -95,7 +109,7 @@ public class FirestoreService : MonoBehaviour
                 }}
             }}
         }}";
-
+        Debug.Log(queryJson);
         byte[] bodyRaw = Encoding.UTF8.GetBytes(queryJson);
 
         UnityWebRequest request = new UnityWebRequest(queryUrl, "POST");
@@ -113,7 +127,7 @@ public class FirestoreService : MonoBehaviour
             // Parse manuel car JsonUtility ne gère pas les tableaux racine
             RunQueryResponse[] queryResults = JsonHelper.FromJson<RunQueryResponse>(response);
 
-            if (queryResults != null)
+            if (queryResults != null && queryResults.Length > 0)
             {
                 foreach (var result in queryResults)
                 {
@@ -132,16 +146,17 @@ public class FirestoreService : MonoBehaviour
                         (float)(doc.fields.lat?.doubleValue ?? 0),
                         (float)(doc.fields.lon?.doubleValue ?? 0),
                         doc.fields.description?.stringValue ?? "",
-                        doc.fields.estPrive?.boolValue ?? false,
+                        doc.fields.estPrive?.booleanValue ?? false,
                         doc.fields.prefabTag?.stringValue ?? "",
                         int.TryParse(doc.fields.sliderValues?.integerValue, out int val) ? val : 1
                     );
 
                     poi.imageURLs = doc.fields.imageURLs?.arrayValue?.values != null
-                        ? doc.fields.imageURLs.arrayValue.values.ConvertAll(v => v.stringValue).ToArray()
+                        ? System.Array.ConvertAll(doc.fields.imageURLs.arrayValue.values,
+                            v => v?.stringValue ?? "")
                         : new string[0];
                     poi.userId        = docUserId;
-                    poi.estPrive      = doc.fields.estPrive?.boolValue ?? false;
+                    poi.estPrive      = doc.fields.estPrive?.booleanValue ?? false;
                     poi.isProposition = collection == "PropositionPOI";
 
                     Debug.Log($"[{collection}] trouvé : {poi.nom}");
