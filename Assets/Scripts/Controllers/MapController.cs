@@ -27,14 +27,13 @@ public class MapController : MonoBehaviour, IDragHandler
     private FirestoreService firestoreService;
     private LocationService locationService;
     private MapService mapService;
+    private Slider zoomSlider;
 
     private Vector2 lastCenterTile;
     private Dictionary<Vector2, GameObject> spawnedTiles = new Dictionary<Vector2, GameObject>();
     private Dictionary<string, GameObject> spawnedPOIMarkers = new Dictionary<string, GameObject>();
     private List<POIData> allPOIs = new List<POIData>();
     private Queue<GameObject> poiPool = new Queue<GameObject>();
-    [SerializeField] private GameObject poiPanel;
-    private GameObject activePOIPanel;
 
     IEnumerator Start()
     {
@@ -58,7 +57,7 @@ public class MapController : MonoBehaviour, IDragHandler
         contentTransform.anchoredPosition = Vector2.zero;
 
         // Connection du slider de zoom
-        Slider zoomSlider = GameObject.Find("ZoomSlider").GetComponent<Slider>();
+        zoomSlider = GameObject.Find("ZoomSlider").GetComponent<Slider>();
         zoomSlider.onValueChanged.AddListener(OnZoomChanged);
 
         UpdateGrid();
@@ -122,22 +121,6 @@ public class MapController : MonoBehaviour, IDragHandler
         }
     }
 
-    public void ShowPOIPanel(POIData poi)
-    {
-        
-        if (activePOIPanel != null)
-            Destroy(activePOIPanel);
-        
-        // Instancier le panel en tant qu'enfant de MapContent
-        activePOIPanel = Instantiate(poiPanel, contentTransform);
-        
-        activePOIPanel.transform.Find("ContentContainer/POIName").GetComponent<TextMeshProUGUI>().text = "<b>Nom : </b>" + poi.nom;
-        activePOIPanel.transform.Find("ContentContainer/POIDescription").GetComponent<TextMeshProUGUI>().text = "<b>Description : </b>" + poi.description;
-        activePOIPanel.transform.Find("ContentContainer/POIVisibilite").GetComponent<Toggle>().isOn = poi.estPrive;
-        
-        activePOIPanel.transform.SetAsLastSibling();
-    }
-
     public void OnDrag(PointerEventData eventData)
     {
         contentTransform.anchoredPosition += eventData.delta;
@@ -147,11 +130,7 @@ public class MapController : MonoBehaviour, IDragHandler
         Vector2 discreteCenter = new Vector2(Mathf.Floor(currentPosTile.x), Mathf.Floor(currentPosTile.y));
 
         // Détruire le POI panel actif lors du déplacement
-        if (activePOIPanel != null)
-        {
-            Destroy(activePOIPanel);
-            activePOIPanel = null;
-        }
+        POIMarkerView.CloseActivePanel();
 
         if (discreteCenter != lastCenterTile)
         {
@@ -314,6 +293,13 @@ public class MapController : MonoBehaviour, IDragHandler
             mapService.Initialize(userLocation.latitude, userLocation.longitude);
             lastCenterTile = new Vector2(Mathf.Floor(mapService.GetStartTileCoords().x), Mathf.Floor(mapService.GetStartTileCoords().y));
             contentTransform.anchoredPosition = Vector2.zero;
+            
+            // Synchroniser la valeur du slider sans déclencher OnZoomChanged
+            if (zoomSlider != null)
+            {
+                zoomSlider.SetValueWithoutNotify(14);
+            }
+            
             UpdateGrid();
         }
     }

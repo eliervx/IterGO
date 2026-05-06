@@ -146,6 +146,7 @@ namespace IterGO.Controllers
         public void OnSendClicked()
         {
             if (!ValidateFields()) return;
+
             string photoBase64 = FirestoreService.TextureToBase64(currentPhoto, 256);
             string titre = titleField.text;
             string description = descriptionField.text;

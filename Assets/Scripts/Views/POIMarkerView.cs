@@ -50,11 +50,22 @@ public class POIMarkerView : MonoBehaviour
         if (poiData == null) return;
 
         if (nameText != null)
-            nameText.text = poiData.nom;
+            nameText.text = "<b>Nom : </b>" + poiData.nom;
 
-        if (descriptionText != null)
-            descriptionText.text = poiData.description;
+        if (descriptionText != null) {
+            if (!string.IsNullOrEmpty(poiData.description)) 
+            {
+                descriptionText.text = "<b>Description : </b>" + poiData.description;
+            } 
+            else 
+            {
+                descriptionText.text = "<b>Description : </b><i> Aucune donnée </i>";
+            }
+        
+        }
     }
+
+    
 
     /// <summary>
     /// Met à jour la position du marqueur POI
@@ -214,7 +225,7 @@ public class POIMarkerView : MonoBehaviour
     public void OnMarkerClicked()
     {
         Debug.Log($"POI cliqué : {poiData.nom}");
-        mapController.ShowPOIPanel(poiData);
+        ShowPOIPanel();
         UpdateDisplay();
     }
 }
