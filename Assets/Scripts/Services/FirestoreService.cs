@@ -79,22 +79,58 @@ public class FirestoreService : MonoBehaviour
 
     public void GetUserEntries(string userId, OnPOIsLoadedCallback callback)
     {
-        userId = $"projects/{FirebaseConfig.PROJECT_ID}/databases/(default)/documents/Utilisateur/{authService?.GetCurrentUserId()}";
-        StartCoroutine(GetUserEntriesCoroutine(userId, callback));
+        StartCoroutine(GetUserEntriesAsync(callback));
     }
 
-    private IEnumerator GetUserEntriesCoroutine(string userId, OnPOIsLoadedCallback callback)
+    private IEnumerator GetUserEntriesAsync(OnPOIsLoadedCallback callback)
     {
+        // Attendre que l'authentification soit prête
+        while (authService == null || !authService.IsUserLoggedIn())
+        {
+            Debug.Log("Attente de l'authentification...");
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        string currentUserId = authService.GetCurrentUserId();
+        if (string.IsNullOrEmpty(currentUserId))
+        {
+            Debug.LogError("Utilisateur non connecté après attente, impossible de récupérer les entrées utilisateur");
+            callback?.Invoke(new List<POIData>());
+            yield break;
+        }
+
+        string userReference = $"projects/{FirebaseConfig.PROJECT_ID}/databases/(default)/documents/Utilisateur/{currentUserId}";
+        Debug.Log($"Récupération des entrées pour l'utilisateur: {currentUserId}, référence: {userReference}");
+
+        // Attendre que le token soit disponible
+        string token = authService.GetIdToken();
+        int attempts = 0;
+        while (string.IsNullOrEmpty(token) && attempts < 10) // Timeout après 5 secondes
+        {
+            Debug.Log("Attente du token d'authentification...");
+            yield return new WaitForSeconds(0.5f);
+            token = authService.GetIdToken();
+            attempts++;
+        }
+
+        if (string.IsNullOrEmpty(token))
+        {
+            Debug.LogError("Token d'authentification non disponible après attente");
+            callback?.Invoke(new List<POIData>());
+            yield break;
+        }
+
+        Debug.Log("Token d'authentification récupéré avec succès");
         List<POIData> allEntries = new List<POIData>();
 
-        yield return StartCoroutine(FetchCollection("POI", userId, allEntries));
-        yield return StartCoroutine(FetchCollection("PropositionPOI", userId, allEntries));
+        yield return StartCoroutine(FetchCollection("POI", userReference, token, allEntries));
+        yield return StartCoroutine(FetchCollection("PropositionPOI", userReference, token, allEntries));
 
-        Debug.Log($"{allEntries.Count} entrées trouvées pour userId={userId}");
+        Debug.Log($"{allEntries.Count} entrées trouvées pour userReference={userReference}");
         callback?.Invoke(allEntries);
     }
 
-    private IEnumerator FetchCollection(string collection, string userId, List<POIData> results)
+    private IEnumerator FetchCollection(string collection, string userReference, string token, List<POIData> results)
     {
         string queryUrl = $"{url}:runQuery";
 
@@ -105,18 +141,20 @@ public class FirestoreService : MonoBehaviour
                     ""fieldFilter"": {{
                         ""field"": {{ ""fieldPath"": ""userId"" }},
                         ""op"": ""EQUAL"",
-                        ""value"": {{ ""referenceValue"": ""{userId}"" }}
+                        ""value"": {{ ""referenceValue"": ""{userReference}"" }}
                     }}
                 }}
             }}
         }}";
-        Debug.Log(queryJson);
+        Debug.Log($"Query JSON pour {collection}: {queryJson}");
         byte[] bodyRaw = Encoding.UTF8.GetBytes(queryJson);
 
         UnityWebRequest request = new UnityWebRequest(queryUrl, "POST");
         request.uploadHandler   = new UploadHandlerRaw(bodyRaw);
         request.downloadHandler = new DownloadHandlerBuffer();
         request.SetRequestHeader("Content-Type", "application/json");
+        request.SetRequestHeader("Authorization", "Bearer " + token);
+        Debug.Log($"Envoi de requête runQuery pour {collection} avec token d'authentification");
 
         yield return request.SendWebRequest();
 
