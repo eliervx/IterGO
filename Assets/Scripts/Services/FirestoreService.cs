@@ -96,6 +96,7 @@ public class FirestoreService : MonoBehaviour
     private IEnumerator FetchCollection(string collection, string userId, List<POIData> results)
     {
         string queryUrl = $"{url}:runQuery";
+        string userPath = $"projects/{FirebaseConfig.PROJECT_ID}/databases/(default)/documents/Utilisateur/{userId}";
 
         string queryJson = $@"{{
             ""structuredQuery"": {{
@@ -104,7 +105,7 @@ public class FirestoreService : MonoBehaviour
                     ""fieldFilter"": {{
                         ""field"": {{ ""fieldPath"": ""userId"" }},
                         ""op"": ""EQUAL"",
-                        ""value"": {{ ""referenceValue"": ""{userId}"" }}
+                        ""value"": {{ ""referenceValue"": ""{userPath}"" }}
                     }}
                 }}
             }}
@@ -241,7 +242,7 @@ public class FirestoreService : MonoBehaviour
         string lat = latitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
         string lon = longitude.ToString(System.Globalization.CultureInfo.InvariantCulture);
 
-        string userPath = userId;
+        string userPath = $"projects/{FirebaseConfig.PROJECT_ID}/databases/(default)/documents/Utilisateur/{userId}";
 
         string json = $@"{{
             ""fields"": {{
