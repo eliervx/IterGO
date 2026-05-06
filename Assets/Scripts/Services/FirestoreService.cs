@@ -79,6 +79,7 @@ public class FirestoreService : MonoBehaviour
 
     public void GetUserEntries(string userId, OnPOIsLoadedCallback callback)
     {
+        userId = $"projects/{FirebaseConfig.PROJECT_ID}/databases/(default)/documents/Utilisateur/{authService?.GetCurrentUserId()}";
         StartCoroutine(GetUserEntriesCoroutine(userId, callback));
     }
 
