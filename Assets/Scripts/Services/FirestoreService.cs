@@ -7,8 +7,8 @@ using System.Text;
 
 public class FirestoreService : MonoBehaviour
 {
-    // private static string projectId = "itergo-fd8aa";
-    private static string projectId = "itergo-dev";
+    private static string projectId = "itergo-fd8aa";
+    //private static string projectId = "itergo-dev";
     private static string url = $"https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents";
 
     public delegate void OnPOIsLoadedCallback(List<POIData> pois);
@@ -81,20 +81,50 @@ public class FirestoreService : MonoBehaviour
 
     private IEnumerator FetchCollection(string collection, string userId, List<POIData> results)
     {
-        UnityWebRequest request = UnityWebRequest.Get($"{url}/{collection}?pageSize=100");
+        string queryUrl = $"{url}:runQuery";
+
+        string queryJson = $@"{{
+            ""structuredQuery"": {{
+                ""from"": [{{ ""collectionId"": ""{collection}"" }}],
+                ""where"": {{
+                    ""fieldFilter"": {{
+                        ""field"": {{ ""fieldPath"": ""userId"" }},
+                        ""op"": ""EQUAL"",
+                        ""value"": {{ ""referenceValue"": ""{userId}"" }}
+                    }}
+                }}
+            }}
+        }}";
+
+        byte[] bodyRaw = Encoding.UTF8.GetBytes(queryJson);
+
+        UnityWebRequest request = new UnityWebRequest(queryUrl, "POST");
+        request.uploadHandler   = new UploadHandlerRaw(bodyRaw);
+        request.downloadHandler = new DownloadHandlerBuffer();
+        request.SetRequestHeader("Content-Type", "application/json");
+
         yield return request.SendWebRequest();
 
         if (request.result == UnityWebRequest.Result.Success)
         {
-            FirestoreResponse data = JsonUtility.FromJson<FirestoreResponse>(request.downloadHandler.text);
+            // runQuery retourne un tableau JSON
+            string response = request.downloadHandler.text;
+            
+            // Parse manuel car JsonUtility ne gère pas les tableaux racine
+            RunQueryResponse[] queryResults = JsonHelper.FromJson<RunQueryResponse>(response);
 
-            if (data != null && data.documents != null)
+            if (queryResults != null)
             {
-                foreach (var doc in data.documents)
+                foreach (var result in queryResults)
                 {
+                    if (result == null) continue;
+                    if (result.document == null) continue;
+                    if (result.document.name == null) continue;
+                    if (result.document.fields == null) continue;
+
+                    var doc = result.document;
+                    Debug.Log($"Le doc trouvé : {doc.name} {doc.fields}");
                     string docUserId = doc.fields.userId?.referenceValue?.Trim() ?? "";
-                    
-                    if (docUserId != userId) continue;
 
                     POIData poi = new POIData(
                         doc.name,
@@ -104,24 +134,24 @@ public class FirestoreService : MonoBehaviour
                         doc.fields.description?.stringValue ?? "",
                         doc.fields.estPrive?.boolValue ?? false,
                         doc.fields.prefabTag?.stringValue ?? "",
-                        int.Parse(doc.fields.sliderValues?.integerValue ?? "1")
+                        int.TryParse(doc.fields.sliderValues?.integerValue, out int val) ? val : 1
                     );
 
                     poi.imageURLs = doc.fields.imageURLs?.arrayValue?.values != null
                         ? doc.fields.imageURLs.arrayValue.values.ConvertAll(v => v.stringValue).ToArray()
                         : new string[0];
-                    poi.userId         = doc.fields.userId?.referenceValue ?? "";
-                    poi.estPrive       = doc.fields.estPrive?.boolValue ?? false;
-                    poi.isProposition  = collection == "PropositionPOI";
+                    poi.userId        = docUserId;
+                    poi.estPrive      = doc.fields.estPrive?.boolValue ?? false;
+                    poi.isProposition = collection == "PropositionPOI";
 
-                    Debug.Log($"Un {collection}: {poi.nom}");
+                    Debug.Log($"[{collection}] trouvé : {poi.nom}");
                     results.Add(poi);
                 }
             }
         }
         else
         {
-            Debug.LogError($"Erreur {collection} : {request.error}");
+            Debug.LogError($"Erreur {collection} : {request.error}\n{request.downloadHandler.text}");
         }
     }
 
