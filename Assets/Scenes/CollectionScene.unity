@@ -202,7 +202,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 143018586}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999929
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -542,6 +542,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5833164898060636361, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6647404011494711611, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7489154861859556706, guid: e096cfa17c1148e4b94f08d4d2af3f91, type: 3}

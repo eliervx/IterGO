@@ -21,8 +21,6 @@ public class CollectionController : MonoBehaviour
         foreach (Transform child in poiListContainer)
             Destroy(child.gameObject);
 
-        // UserSession.UserId retourne "1" pour l'instant
-        // Quand tu auras le login, ça retournera automatiquement le bon ID
         firestoreService.GetUserEntries(UserSession.UserId, OnEntriesLoaded);
     }
 
