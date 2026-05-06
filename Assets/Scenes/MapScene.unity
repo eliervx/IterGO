@@ -765,10 +765,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MapController
   tilePrefab: {fileID: 1035413037484438972, guid: d76344f07cce1d0428814196b61ac924, type: 3}
-  poiMarkerPrefab: {fileID: 8879793094871096928, guid: 9d830374d99feeb4482e02efc7bda342, type: 3}
+  poiMarkerPrefab: {fileID: 3360553282184378551, guid: 0bfe7eba78efedb47a425dee900658f8, type: 3}
   initialZoom: 6
   displayTileSize: 512
-  poiPanel: {fileID: 5502586891763368546, guid: 518ff2b37f83b6f488f6e1800ad6251c, type: 3}
 --- !u!1 &773708244
 GameObject:
   m_ObjectHideFlags: 0
