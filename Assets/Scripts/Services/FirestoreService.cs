@@ -131,9 +131,13 @@ public class FirestoreService : MonoBehaviour
             {
                 foreach (var result in queryResults)
                 {
-                    if (result == null || result.document == null || result.document.fields == null) continue;
+                    if (result == null) continue;
+                    if (result.document == null) continue;
+                    if (result.document.name == null) continue;
+                    if (result.document.fields == null) continue;
 
                     var doc = result.document;
+                    Debug.Log($"Le doc trouvé : {doc.name} {doc.fields}");
                     string docUserId = doc.fields.userId?.referenceValue?.Trim() ?? "";
 
                     POIData poi = new POIData(
